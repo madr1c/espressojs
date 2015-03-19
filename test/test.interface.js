@@ -18,6 +18,50 @@ describe('Interface', function() {
             expect( iface.resource.length ).to.equal(3);
         });
 
+        it('should throw if no arguments are given', function() {
+            var inst = new Espresso();
+            var fn = function() { inst.resource(); };
+
+            expect( fn ).to.throw(/arguments/);
+        });
+
+        it('should throw if one arguments is given', function() {
+            var inst = new Espresso();
+            var fn = function() { inst.resource('pattern'); };
+
+            expect( fn ).to.throw(/arguments/);
+        });
+
+        it('should throw if an invalid pattern is given', function() {
+            var inst = new Espresso();
+            var fn = function() { inst.resource(42); };
+
+            expect( fn ).to.throw(/pattern/);
+        });
+
+        it('should throw if an invalid callback is given', function() {
+            var inst = new Espresso();
+            var fn = function() { inst.resource('pattern', 42); };
+
+            expect( fn ).to.throw(/callback/);
+        });
+
+        it('should throw if there are no handlers in the given object', function() {
+            var inst = new Espresso();
+            var fn = function() { inst.resource('pattern',{noverb:function(){}}); };
+
+            expect( fn ).to.throw(/callback/);
+        });
+
+        it('should not throw if a function or an object with handlers is given', function() {
+            var inst = new Espresso();
+            var fn0 = function() { inst.resource('pattern', function(){} ); };
+            var fn1 = function() { inst.resource('pattern', { get: function(){} }); };
+
+            expect( fn0 ).not.to.throw(/callback/);
+            expect( fn1 ).not.to.throw(/callback/);
+        });
+
     });
 
     describe('.promise', function() {
@@ -81,7 +125,7 @@ describe('Interface', function() {
         });
 
         it('should return a default function if not set', function() {
-            expect( inst.getSerializer() ).to.be.undefined;
+            expect( iface.getSerializer() ).to.be.undefined;
         });
     });
 
