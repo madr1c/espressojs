@@ -1,0 +1,35 @@
+{
+  "name": "espressojs",
+  "version": "1.0.0",
+  "description": "A framework for creating REST APIs",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dak0rn/espressojs.git"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "espressojs",
+    "framework",
+    "api"
+  ],
+  "author": "dak0rn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dak0rn/espressojs/issues"
+  },
+  "homepage": "https://github.com/dak0rn/espressojs",
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "grunt": "^0.4.5",
+    "grunt-mocha-test": "^0.12.7",
+    "mocha": "^2.2.1"
+  }
+}
