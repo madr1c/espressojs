@@ -84,8 +84,8 @@ describe('Interface', function() {
             expect( iface.dispatchRequest ).to.be.a('function');
         });
 
-        it('should take three arguments', function() {
-            expect( iface.dispatchRequest.length ).to.equal(3);
+        it('should take one argument', function() {
+            expect( iface.dispatchRequest.length ).to.equal(1);
         });
 
     });
