@@ -73,7 +73,7 @@ describe('Interface', function() {
         it('should return a deferred object', function() {
             var df = iface.promise();
 
-            expect( df ).to.have.all.keys(['promise','resolve','reject']);
+            expect( df ).to.have.any.keys('promise','resolve','reject');
         });
 
     });
