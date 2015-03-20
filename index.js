@@ -16,18 +16,22 @@ module.exports = (function() {
         reponse.setStatus('405');
     };
 
+    var optionsHandler = function(request, response, api, previous) {
+
+    };
+
     // HTTP verbs
-    var VERBS = [
-        'get',
-        'post',
-        'put',
-        'delete',
-        'head',
-        'options'
-    ];
+    var VERBS = {
+        'get': defaultHandler,
+        'post': defaultHandler,
+        'put': defaultHandler,
+        'delete': defaultHandler,
+        'head': defaultHandler,
+        'options': defaultHandler
+    };
 
     // Handler identifier for all methods
-    var HANDLER_ALL = 'all';
+    var HANDLER_ALL = '_all';
 
     /**
      * Response
@@ -67,6 +71,24 @@ module.exports = (function() {
         this.cookie   = {};                 // Key-value-mapping of cookie values
         this.header   = {};                 // Key-value-mapping of all header fields
 
+        this.api = {
+            handler: undefined              // Handler for this request. Set by espressojs
+        };
+
+    };
+
+    /**
+     * An entry in the API's resource table.
+     *
+     * Contains information about the pattern, handler and
+     * the context the callbacks should be executed in.
+     */
+    var Handler = function(pattern, callbacks, context) {
+
+        this.callbacks = callbacks || {};        // Verb => function mapping
+        this.context   = context || {};          // Invokation context
+        this.pattern   = pattern || undefined;   // metacarattere pattern
+
     };
 
 
@@ -78,6 +100,10 @@ module.exports = (function() {
         this._resources = [];
 
     };
+
+    // Expose parts
+    Espresso.Request = Request;
+    Espresso.Response = Response;
 
     /**
      * Registers a resource
@@ -96,7 +122,16 @@ module.exports = (function() {
 
         context || (context = {});
 
+        var handler = {};
 
+    };
+
+    /**
+     * Returns a promise
+     *
+     */
+    Espresso.prototype.promise = function() {
+        return when.defer();
     };
 
     return Espresso;
