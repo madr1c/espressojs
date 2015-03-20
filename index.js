@@ -128,6 +128,9 @@ module.exports = (function() {
         if( ! _.isString(pattern) )
             throw new Error('.resource() needs a string as a pattern');
 
+        if( ! _.isFunction(options) && ! _.isObject(options) )
+            throw new Error('.resource() needs a valid callback fn or an option with functions');
+            
         // Setup context
         context || (context = {});
 
