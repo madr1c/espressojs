@@ -18,6 +18,11 @@ module.exports = (function() {
 
     var optionsHandler = function(request, response, api, previous) {
 
+        var callbacks = request.api.handler.callbacks;
+
+        var methods = _.map(_.keys(callbacks), function(s){return s.toUpperCase(); }).join(',');
+
+        response.headers.Allow = methods;
     };
 
     // HTTP verbs
@@ -27,7 +32,7 @@ module.exports = (function() {
         'put': defaultHandler,
         'delete': defaultHandler,
         'head': defaultHandler,
-        'options': defaultHandler
+        'options': optionsHandler
     };
 
     // Handler identifier for all methods
@@ -117,13 +122,33 @@ module.exports = (function() {
         if( 2 > arguments.length )
             throw new Error('.resource() needs at least two arguments');
 
-        if( 'string' !== typeof pattern )
+        if( ! _.isString(pattern) )
             throw new Error('.resource() needs a string as a pattern');
 
+        // Setup context
         context || (context = {});
 
-        var handler = {};
+        // Setup handlers
+        var handlers = {};
 
+        // User submitted a function?
+        if( _.isFunction(options) )
+            handlers[HANDLER_ALL] = options;
+        else {
+            // If not, we build a assignment of verbs and functions
+            _.each( _.keys(VERBS), function(verb) {
+                // We use either the given or the default callback
+                handlers[verb] = ( _.isFunction(options[verb]) ? options[verb] : VERBS[verb] );
+            });
+        }
+
+        // Setup the pattern
+        pattern = new metacarattere(pattern);
+
+        // Create a new entry in the resources table
+        var handler = new Handler(pattern, handlers, context);
+
+        this._resources.push(handler);
     };
 
     /**
