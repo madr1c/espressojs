@@ -46,20 +46,10 @@ describe('Interface', function() {
             expect( fn ).to.throw(/callback/);
         });
 
-        it('should throw if there are no handlers in the given object', function() {
-            var inst = new Espresso();
-            var fn = function() { inst.resource('pattern',{noverb:function(){}}); };
-
-            expect( fn ).to.throw(/callback/);
-        });
-
         it('should not throw if a function or an object with handlers is given', function() {
             var inst = new Espresso();
-            var fn0 = function() { inst.resource('pattern', function(){} ); };
-            var fn1 = function() { inst.resource('pattern', { get: function(){} }); };
-
-            expect( fn0 ).not.to.throw(/callback/);
-            expect( fn1 ).not.to.throw(/callback/);
+            inst.resource('pattern', function(){} );
+            inst.resource('pattern', { get: function(){} });
         });
 
     });
