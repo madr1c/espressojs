@@ -172,6 +172,13 @@ module.exports = (function() {
         this._serializer = fn;
     };
 
+    /**
+     * Returns the set serializer
+     */
+    Espresso.prototype.getSerializer = function() {
+        return this._serializer;
+    };
+
     return Espresso;
 
 })();
