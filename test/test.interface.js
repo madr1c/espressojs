@@ -34,7 +34,7 @@ describe('Interface', function() {
 
         it('should throw if an invalid pattern is given', function() {
             var inst = new Espresso();
-            var fn = function() { inst.resource(42); };
+            var fn = function() { inst.resource(42, function(){}); };
 
             expect( fn ).to.throw(/pattern/);
         });
