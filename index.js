@@ -39,6 +39,7 @@ module.exports = (function() {
         this.status = '200';    // Default status => Everything's okay
         this.headers = {};      // Response headers
         this.body = undefined;  // Response body
+        this.cookies = {};      // Key-value-mapping of cookies
 
     };
 
