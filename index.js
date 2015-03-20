@@ -105,6 +105,7 @@ module.exports = (function() {
     var Espresso = function() {
 
         this._resources = [];
+        this._serializer = undefined;   // TODO Default serializer
 
     };
 
@@ -159,6 +160,16 @@ module.exports = (function() {
      */
     Espresso.prototype.promise = function() {
         return when.defer();
+    };
+
+    /**
+     * Sets the serializer
+     */
+    Espresso.prototype.setSerializer = function( fn ) {
+        if( ! _.isFunction(fn) )
+            throw new Error('Espresso.setSerializer expects a function');
+
+        this._serializer = fn;
     };
 
     return Espresso;
