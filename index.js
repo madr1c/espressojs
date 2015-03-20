@@ -20,7 +20,9 @@ module.exports = (function() {
 
         var callbacks = request.api.handler.callbacks;
 
-        var methods = _.map(_.keys(callbacks), function(s){return s.toUpperCase(); }).join(',');
+        // Create a list of all supported functions
+        var toUpperCase = function(s) { return s.toUpperCase(); };
+        var methods = _(callbacks).functions().map( toUpperCase ).value().join(',');
 
         response.headers.Allow = methods;
     };
