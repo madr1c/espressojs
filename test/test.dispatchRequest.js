@@ -21,10 +21,13 @@ describe('.dispatchRequest', function() {
         var p = iface.dispatchRequest(req);
         expect( p.then ).to.be.a('function');
         expect( p.catch ).to.be.a('function');
+
+        // Mute when.js warnings
+        p.catch(function(){});
     });
 
-    describe("the returned promise", function(done) {
-        it('should be rejected if invalid arguments are given', function() {
+    describe("the returned promise", function() {
+        it('should be rejected if invalid arguments are given', function(done) {
             var p = iface.dispatchRequest();
 
             p.then(function() {
@@ -34,5 +37,6 @@ describe('.dispatchRequest', function() {
             });
         });
     });
+
 
 });
