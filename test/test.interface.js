@@ -66,19 +66,7 @@ describe('Interface', function() {
             expect( df ).to.have.any.keys('promise','resolve','reject');
         });
 
-    });
-
-    describe('.dispatchRequest', function() {
-
-        it('should be a function', function() {
-            expect( iface.dispatchRequest ).to.be.a('function');
-        });
-
-        it('should take one argument', function() {
-            expect( iface.dispatchRequest.length ).to.equal(1);
-        });
-
-    });
+    });    
 
     describe('.setSerializer', function() {
 
