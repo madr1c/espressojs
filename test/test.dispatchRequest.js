@@ -27,6 +27,7 @@ describe('.dispatchRequest', function() {
     });
 
     describe("the returned promise", function() {
+
         it('should be rejected if invalid arguments are given', function(done) {
             var p = iface.dispatchRequest();
 
@@ -36,6 +37,47 @@ describe('.dispatchRequest', function() {
                 done();
             });
         });
+
+    });
+
+    describe("registered functions", function() {
+
+        it('should be called in the correct order', function(done) {
+            var e = new Espresso();
+            var req = new Espresso.Request();
+            req.path = "/api/v1/users/test";
+            var handle = 0;
+
+            e.resource('/api/:version/:collection', function() {
+                if( 2 !== handle )
+                    done('/api/:version/:collection was not called in order');
+                else
+                    handle++;
+            });
+
+            e.resource('/api/:version', function() {
+                if( 1 !== handle )
+                    done('/api/:version was not called in order');
+                else
+                    handle++;
+            });
+
+            e.resource('/api', function() {
+                if( 0 !== handle )
+                    done('/api was not called at first');
+                else
+                    handle++;
+            });
+
+            e.resource('/api/:version/:collection/:id', function() {
+                if( 3 !== handle )
+                    done('/api/:version/:collection/:id was not called in order');
+                else
+                    done();
+            });
+
+        });
+
     });
 
 
