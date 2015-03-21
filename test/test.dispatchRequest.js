@@ -76,6 +76,8 @@ describe('.dispatchRequest', function() {
                     done();
             });
 
+            e.dispatchRequest(req);
+
         });
 
     });
