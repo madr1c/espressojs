@@ -12,7 +12,8 @@ describe('Espresso.Response', function() {
         { property: 'status', value: '200'},
         { property: 'headers'},
         { property: 'body'},
-        { property: 'cookies'}
+        { property: 'cookies'},
+        { property: 'rawBody'}
     ];
 
     it('should be a (constructor) function', function() {
