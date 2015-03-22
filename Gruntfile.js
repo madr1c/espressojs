@@ -12,11 +12,20 @@ module.exports = function(grunt) {
                 },
 
                 src: ['test/test.*.js']
+            },
+
+            nyan: {
+                options: {
+                    reporter: 'nyan'
+                },
+
+                src: ['test/test.*.js']
             }
         }
     });
 
     grunt.registerTask('test', ['mochaTest:dev']);
+    grunt.registerTask('fancyTest', ['mochaTest:nyan']);
 
     grunt.loadNpmTasks('grunt-mocha-test');
 };
