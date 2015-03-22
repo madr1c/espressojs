@@ -54,14 +54,14 @@ describe('Interface', function() {
 
     });
 
-    describe('.promise', function() {
+    describe('.deferred', function() {
 
         it('should be a function', function() {
-            expect( iface.promise ).to.be.a('function');
+            expect( iface.deferred ).to.be.a('function');
         });
 
         it('should return a deferred object', function() {
-            var df = iface.promise();
+            var df = iface.deferred();
 
             expect( df ).to.have.any.keys('promise','resolve','reject');
         });
