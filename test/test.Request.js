@@ -30,4 +30,12 @@ describe('Espresso.Request', function() {
         });
     });
 
+    it('should inherit from a given object overwriting default values', function() {
+        var i = new Espresso.Request({ method: 'get', blah: 'meh' });
+
+        expect( i.method ).to.equal('get');
+        expect( i.blah ).to.exist;
+        expect( i.blah ).to.equal('meh');
+    });
+
 });
