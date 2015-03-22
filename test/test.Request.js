@@ -7,6 +7,19 @@ var _ = require('lodash');
 
 describe('Espresso.Request', function() {
 
+    var properties = [
+        { property: 'method'},
+        { property: 'body'},
+        { property: 'hostname'},
+        { property: 'ip'},
+        { property: 'path'},
+        { property: 'protocol'},
+        { property: 'query'},
+        { property: 'cookie'},
+        { property: 'header'},
+        { property: 'api'}
+    ];
+
     it('should be a (constructor) function', function() {
         expect( Espresso.Request ).to.be.a('function');
     });
@@ -20,13 +33,8 @@ describe('Espresso.Request', function() {
 
         expect( i ).to.be.an('object');
 
-        _.each( [
-            'method', 'body', 'hostname',
-            'ip', 'path', 'protocol',
-            'query', 'cookie', 'header',
-            'api'
-        ], function(prop) {
-            expect( i ).to.have.ownProperty(prop);
+        _.each( properties, function(prop) {
+            expect( i ).to.have.ownProperty(prop.property);
         });
     });
 
