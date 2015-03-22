@@ -245,5 +245,77 @@ describe('.dispatchRequest', function() {
 
     });
 
+    describe('handler chain', function() {
 
+        it('should stop if a handler returns a rejected promise', function() {
+            var e = new Espresso();
+
+            e.resource('/a', function(a,b,api) {
+                var d = api.deferred();
+                d.reject('meh');
+
+                return d.promise;
+            });
+
+            e.resource('/a/b', function() {
+                throw new Error('Should not be called');
+            });
+
+            var p = e.dispatchRequest( new Espresso.Request({ path: '/a/b', method: 'get'}) );
+
+            // Mute when.js
+            p.catch( function(){} );
+        });
+
+        it('should reject the returned promise if a handler returns a rejected promise', function(done) {
+            var e = new Espresso();
+
+            e.resource('/a', function(a,b,api) {
+                var d = api.deferred();
+
+                d.reject('meh');
+
+                return d.promise;
+            });
+
+            e.resource('/a/b', function() {
+                throw new Error('Should not be called');
+            });
+
+            var p = e.dispatchRequest( new Espresso.Request({ path: '/a/b', method: 'get'}) );
+
+            p.then(function() {
+                done('failed');
+            }).catch( function() {
+                done();
+            });
+        });
+
+        it('should set the response body correctly if a handler returns a rejected promise', function(done) {
+            var e = new Espresso();
+
+            e.resource('/a', function(a,b,api) {
+                var d = api.deferred();
+
+                d.reject('meh');
+
+                return d.promise;
+            });
+
+            e.resource('/a/b', function() {
+                throw new Error('Should not be called');
+            });
+
+            var p = e.dispatchRequest( new Espresso.Request({ path: '/a/b', method: 'get'}) );
+
+            p.then(function() {
+                done('failed');
+            }).catch( function(response) {
+
+                expect( response.rawBody ).to.equal('meh');
+                done();
+            });
+        });
+
+    });
 });
