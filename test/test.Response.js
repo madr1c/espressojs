@@ -71,4 +71,29 @@ describe('Espresso.Response', function() {
         expect( i.blah ).to.equal('meh');
     });
 
+    describe('.rawBody', function() {
+
+        it('should equal the unserialized result', function(done) {
+
+            var e = new Espresso();
+            var r = new Espresso.Request({ method: 'get', path: '/whatever' });
+
+            var raw = 42;
+            var dump = "Espresso";
+
+            e.resource('/whatever', function() { return raw; });
+
+            e.setSerializer( function(some, thing, whatever, value) {
+                return dump;
+            });
+
+            e.dispatchRequest(r).then( function(res) {
+                expect( res.body ).to.equal(dump);
+                expect( res.rawBody ).to.equal(raw);
+                done();
+            });
+
+        });
+    });
+
 });
