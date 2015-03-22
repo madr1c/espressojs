@@ -40,8 +40,6 @@ describe('Espresso.Response', function() {
             return ! _.isUndefined(entry.value);
         };
 
-
-
         _.each( _.filter(properties, findDefaultValues), function(prop) {
             expect( i[prop.property] ).to.equal( prop.value );
         });
