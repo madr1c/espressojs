@@ -36,9 +36,8 @@ describe('Serializer', function() {
 
     describe('getter', function() {
 
-        var iface = new Espresso();
-
         it('should be a function', function() {
+            var iface = new Espresso();
             expect( iface.getSerializer ).to.be.a('function');
         });
 
@@ -51,7 +50,8 @@ describe('Serializer', function() {
         });
 
         it('should return a default function if not set', function() {
-            expect( iface.getSerializer() ).to.be.undefined;
+            var iface = new Espresso();
+            expect( iface.getSerializer() ).to.equal( require('../lib/Serializer') );
         });
     });
 
