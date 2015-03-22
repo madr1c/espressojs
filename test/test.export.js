@@ -9,14 +9,6 @@ describe('Exported value', function() {
         expect( Espresso ).to.be.a('function');
     });
 
-    describe('should have a .Request property that', function() {
-
-        it('should be a (constructor) function', function() {
-            expect( Espresso.Request ).to.be.a('function');
-        });
-
-    });
-
     describe('should have a .Response property that', function() {
 
         it('should be a (constructor) function', function() {
