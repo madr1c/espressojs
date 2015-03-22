@@ -4,6 +4,7 @@
 
 var expect = require('chai').expect;
 var Espresso = require('../index');
+var _ = require('lodash');
 
 describe('Serializer', function() {
 
@@ -132,6 +133,42 @@ describe('Serializer', function() {
 
     });
 
+    describe('default function', function() {
+
+        it('it should forward a serialized JSON', function(done) {
+
+            var e = new Espresso();
+            var req = new Espresso.Request({method:'get', path:'/api/users/max'});
+
+            e.resource('/api', function(){});
+            e.resource('/api/:collection', function() {
+                return [
+                    { name: 'john'  },
+                    { name: 'jack'  },
+                    { name: 'max'   },
+                    { name: 'sarah' }
+                ];
+            });
+
+            e.resource('/api/users/:name', function(req, res, api, users) {
+                var target = _.find(users, {name:'max'});
+
+                if( ! _.isObject(target) )
+                    res.setStatus('404');
+                else
+                    return target;
+
+            });
+
+            e.dispatchRequest(req).then( function(response) {
+                expect( response.body ).to.be.a('string');
+                expect( response.body ).to.equal( JSON.stringify({name:'max'}) );
+                done();
+            });
+
+        });
+
+    });
 
 
 });
