@@ -17,7 +17,8 @@ describe('Espresso.Request', function() {
         { property: 'query'},
         { property: 'cookie'},
         { property: 'header'},
-        { property: 'api'}
+        { property: 'api'},
+        { property: 'params'}
     ];
 
     it('should be a (constructor) function', function() {
