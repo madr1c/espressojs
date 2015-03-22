@@ -17,7 +17,6 @@ describe('.dispatchRequest', function() {
 
     it('should return a promise', function() {
         var req = new Espresso.Request();
-        req.path = "";
         var p = iface.dispatchRequest(req);
         expect( p.then ).to.be.a('function');
         expect( p.catch ).to.be.a('function');
@@ -38,9 +37,56 @@ describe('.dispatchRequest', function() {
             });
         });
 
+        it("should get the response on error", function(done) {
+            var e = new Espresso();
+            var p = e.dispatchRequest();
+            p.catch( function(response) {
+                expect( response ).to.be.an('object');
+                done();
+            });
+        });
+
+    });
+
+    it('should create a 500 when no method is given', function(done) {
+        var e = new Espresso();
+        var req = new Espresso.Request();
+        req.path = "/a/b/c";
+
+        e.resource('/a/b/c', function() {
+            done( new Error('Function should not be invoked') );
+        });
+
+        var promise = e.dispatchRequest(req);
+        promise.catch( function() {
+            done();
+        });
+    });
+
+    it('should create a 500 when no path is given', function(done) {
+        var e = new Espresso();
+        var req = new Espresso.Request();
+        req.method = "get";
+
+        var promise = e.dispatchRequest(req);
+        promise.catch( function() {
+            done();
+        });
+    });
+
+    it('should create a 500 when an unknown method is given', function(done) {
+        var e = new Espresso();
+        var req = new Espresso.Request();
+        req.method = "blah";
+
+        var promise = e.dispatchRequest(req);
+        promise.catch( function() {
+            done();
+        });
     });
 
     describe("registered functions", function() {
+
 
         it('should be called in the correct order', function(done) {
             var e = new Espresso();
