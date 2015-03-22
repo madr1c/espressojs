@@ -140,7 +140,6 @@ describe('.dispatchRequest', function() {
 
     describe("registered functions", function() {
 
-
         it('should be called in the correct order', function(done) {
             var e = new Espresso();
             var req = new Espresso.Request();
@@ -182,6 +181,31 @@ describe('.dispatchRequest', function() {
                 done('failed');
             });
 
+        });
+
+        it('should receive the value from the previous function', function(done) {
+            var e = new Espresso();
+            var r = new Espresso.Request({method: 'get', path: '/one/two/three'});
+
+            e.resource('/one', function() {
+                return { one: true };
+            });
+
+            e.resource('/one/two', function(k1, k2, k3, value) {
+                expect( value.one ).to.be.true;
+                return _.extend( value, {two: true});
+            });
+
+            e.resource('/one/two/three', function(k1, k2, k3, value) {
+
+                expect( value.one ).to.be.true;
+                expect( value.two ).to.be.true;
+
+                done();
+
+            });
+
+            e.dispatchRequest( r );
         });
 
     });
