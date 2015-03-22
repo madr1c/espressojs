@@ -108,6 +108,28 @@ describe('Serializer', function() {
 
         });
 
+        it('should get the request, the response, the api and a value', function(done) {
+            var e = new Espresso();
+            var req = new Espresso.Request();
+            req.path = "/api";
+            req.method = "get";
+
+            e.resource('/api', function() {
+                return 'meh';
+            });
+
+            e.setSerializer( function(request, response, api, value) {
+
+                expect( arguments.length ).to.equal(4);
+                expect( api ).to.equal( e );
+                expect( value ).to.equal( 'meh' );
+
+                done();
+            });
+
+            e.dispatchRequest( req );
+        });
+
     });
 
 
