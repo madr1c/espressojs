@@ -208,6 +208,42 @@ describe('.dispatchRequest', function() {
             e.dispatchRequest( r );
         });
 
+        it('should have access to the URL parameters', function(done) {
+            var e = new Espresso();
+            var r = new Espresso.Request({method: 'get', path: '/api'});
+
+            e.resource('/:something', function(request, response, api, value) {
+                expect( request.params ).to.be.an('object');
+                done();
+            });
+
+            e.dispatchRequest(r);
+
+        });
+
+        it('should get the correct URL paramters', function(done) {
+            var e = new Espresso();
+            var r = new Espresso.Request({method: 'get', path: '/api/v1/users/max'});
+
+            var params = {
+                'what': 'api',
+                'version': 'v1',
+                'collection': 'users',
+                'id': 'max'
+            };
+
+            e.resource('/api', function() {});
+            e.resource('/api/v1', function() {});
+            e.resource('/api/v1/users', function() {});
+            e.resource('/:what/:version/:collection/:id', function(req, res, api, val) {
+
+                expect( req.params ).to.deep.equal(params);
+                done();
+            });
+
+            e.dispatchRequest(r);
+        });
+
     });
 
 
