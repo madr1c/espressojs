@@ -123,7 +123,6 @@ describe('.dispatchRequest', function() {
         var p = e.dispatchRequest(req);
 
         p.then(function() {
-            console.log('Running.');
             _.each(tmp, function(value, key) {
                 expect( req[key] ).to.equal(value);
             });
