@@ -46,6 +46,7 @@ describe('.dispatchRequest', function() {
             var e = new Espresso();
             var req = new Espresso.Request();
             req.path = "/api/v1/users/test";
+            req.method = "get";
             var handle = 0;
 
             e.resource('/api/:version/:collection', function() {
@@ -76,7 +77,11 @@ describe('.dispatchRequest', function() {
                     done();
             });
 
-            e.dispatchRequest(req);
+            var p = e.dispatchRequest(req);
+
+            p.catch( function() {
+                done('failed');
+            });
 
         });
 
