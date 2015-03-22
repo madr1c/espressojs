@@ -17,7 +17,7 @@ module.exports = (function() {
     var Espresso = function() {
 
         this._resources = [];
-        this._serializer = undefined;   // TODO Default serializer
+        this._serializer = require('./lib/Serializer');
 
     };
 
