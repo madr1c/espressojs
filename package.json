@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "lodash": "^3.5.0",
-    "metacarattere": "^2.1.0",
+    "metacarattere": "^2.2.0",
     "when": "^3.7.2"
   }
 }
