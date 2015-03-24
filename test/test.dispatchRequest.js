@@ -4,6 +4,7 @@
 var Espresso = require('../index');
 var expect   = require('chai').expect;
 var _ = require('lodash');
+var verbs = require('../lib/utils').verbs;
 
 describe('.dispatchRequest', function() {
     var iface = new Espresso();
@@ -135,7 +136,34 @@ describe('.dispatchRequest', function() {
         });
     });
 
+    describe('should call the correct function for', function() {
+        var e = new Espresso();
 
+        // Methods
+        var methods = _.keys(verbs);
+
+        var handlers;
+        var path;
+
+        _.each( methods, function(method) {
+            it(method, function(done) {
+                handlers = {};
+                handlers[method] = function() { done(); }; // correct handler
+                path = "/" + method;
+
+                _.each( methods, function(hm) {
+
+                    if( hm != method )
+                        handlers[hm] = function() { done('failed'); };
+                });
+
+                e.resource(path, handlers);
+                e.dispatchRequest( new Espresso.Request({method:method, path:path}) );
+            });
+
+
+        });
+    });
 
     describe("registered functions", function() {
 
