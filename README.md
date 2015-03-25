@@ -216,3 +216,23 @@ be resolved with a [response](#response).
 
 Make sure to set at least `.path` and `.method` if your request so that
 it can be handled correctly.
+
+```javascript
+Espresso.prototype.dispatchRequest = function(request) {
+    // magic
+    return response;
+};
+```
+
+```javascript
+var r = new Espresso.Request({
+    method: 'get',
+    path: '/api/v2/users/_all'
+});
+
+api.dispatchRequest(r).then(function(response) {
+    // Request successful
+}).catch(function(response){
+    // Request failed
+});
+```
