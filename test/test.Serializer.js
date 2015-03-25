@@ -131,6 +131,29 @@ describe('Serializer', function() {
             e.dispatchRequest( req );
         });
 
+        it('should have empty parameters and the default path', function(done) {
+            var e = new Espresso();
+            var req = new Espresso.Request();
+            req.path = "/api/2";
+            req.method = "get";
+
+            e.resource('/api', function() {
+            });
+
+            e.resource('/api/2', function() {
+            });
+
+            e.setSerializer( function(request, response, api, value) {
+
+                expect( _.keys(request.params).length ).to.equal(0);
+                expect( request.path ).to.equal('/api/2');
+
+                done();
+            });
+
+            e.dispatchRequest( req );
+        });
+
     });
 
     describe('default function', function() {
