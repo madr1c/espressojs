@@ -19,7 +19,10 @@ This allows you to write DRY and small handlers for resources.
 
 ![](https://raw.githubusercontent.com/dak0rn/espressojs/master/img/cascading-requests.png)
 
-More information about the way espressojs handles resource handlers can be
+More information about the way espressojs uses resources handlers can be
 read in [the wiki](https://github.com/dak0rn/espressojs/wiki/Cascading-requests).
 
 ## The espressojs API
+
+> This API description is not meant to be very detailed, please refer to the [Wiki](https://github.com/dak0rn/espressojs/wiki)
+> for more information about the way espressojs works
