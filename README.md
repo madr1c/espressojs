@@ -107,11 +107,40 @@ is **shared between every** handler and the [serializer function](#setting-the-s
 ### Setting the serializer function
 Serializer functions are used to create a serialized version of the last handler's
 return/fulfillment value. They have the same signature as resource handlers and should return
-something that can be sent to the client.
+something that can be sent to the client. It also can return a [promise](#promise) that will provide
+its fulfillment value to the function that has sent the request.
+
+```javascript
+api.setSerializer( function(req, res, api, value) {
+
+    if( "application/json" === res.headers['Content-type'] )
+        return JSON.stringify( value );
+    else
+        // Something else here
+
+});
+```
+
+* `request` is a [request](#request) given to the API. `request.path` will
+  be the path of the resource handled by this function.
+* `response` is a [response](#response) created by handler functions. This object
+is **shared between every** handler and the [serializer function](#setting-the-serializer-function).
+* `api` is the currently used API object
+* `value` is the return or fulfillment value of the last handler.
 
 
+The **default handler** will just invoke `JSON.stringify` on whatever it gets.
 
 ### Getting the serializer function
+If you want to get the serializer function use the `.getSerializer` function for that.
+
+```javascript
+var fn = function() {};
+
+api.setSerializer(fn);
+api.getSerializer() === fn; // true
+```
+
 
 ### Promises
 An espressojs object offers a `.deferred()` function that returns a deferred object
