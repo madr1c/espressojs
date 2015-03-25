@@ -75,7 +75,7 @@ api.resource('/api/:version', {
 });
 ```
 
-Handler functions may also return a [Promise](#promises):
+Handler functions may also return a [promise](#promises):
 
 ```javascript
 api.resource('/api/:version/:collectionName', function(req, res, api, value) {
@@ -207,3 +207,12 @@ Response
     .rawBody = undefined;   // Raw body, not serialized. Will be set before
                             // given the response to the invoking function
 ```
+
+### Dispatching a request
+
+The `.dispatchRequest()` function is the interface to your application.
+It takes a [request](#request) and returns a [promise](#promise) that will
+be resolved with a [response](#response).
+
+Make sure to set at least `.path` and `.method` if your request so that
+it can be handled correctly.
