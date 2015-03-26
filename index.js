@@ -23,7 +23,7 @@ module.exports = (function() {
         this._resources = [];
         this._serializer = require('./lib/Serializer');
 
-        this.options._options = _.extend(defaults, options);
+        this._options = _.extend({}, defaults, options);
 
     };
 
