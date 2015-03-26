@@ -8,6 +8,14 @@ var Espresso = require('../index');
 describe('Interface', function() {
     var iface = new Espresso();
 
+    describe('constructor function', function() {
+
+        it('should take an argument', function() {
+            expect( Espresso.length ).to.equal(1);
+        });
+
+    });
+
     describe('.resource', function() {
 
         it('should be a function', function() {
