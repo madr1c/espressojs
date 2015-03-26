@@ -6,8 +6,16 @@ var expect = require('chai').expect;
 
 describe('.chainComplete', function() {
 
-    it('should not exist outside the handler chain', function() {
-        expect( new Espresso().chainComplete ).to.not.exist;
+    it('should be a function', function() {
+        expect( new Espresso().chainComplete ).to.be.a('function');
+    });
+
+    it('should take one argument', function() {
+        expect( new Espresso().chainComplete.length ).to.equal(1);
+    });
+
+    it('should return undefined if invoked w/out arguments', function() {
+        expect( new Espresso().chainComplete() ).to.be.undefined;
     });
 
     it('should be a function within handlers', function(done) {
@@ -34,7 +42,7 @@ describe('.chainComplete', function() {
         });
 
         e.resource('/a/b', function(req,res, api) {
-            expect( api.chainComplete() ).to.equal(true);
+            expect( api.chainComplete(this) ).to.equal(true);
             done();
         });
 
@@ -48,7 +56,7 @@ describe('.chainComplete', function() {
         var r = new Espresso.Request({method:'get', path: '/a/b/c'});
 
         e.resource('/a/b/c', function(req,res, api) {
-            expect( api.chainComplete() ).to.equal(false);
+            expect( api.chainComplete(this) ).to.equal(false);
             done();
         });
 
