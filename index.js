@@ -25,6 +25,8 @@ module.exports = (function() {
 
         this._options = _.extend({}, defaults, options);
 
+        this._ids = {};
+
     };
 
     // Expose parts
