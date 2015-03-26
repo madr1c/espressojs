@@ -1,3 +1,20 @@
+# Version 1.1.0
+
+## External
+
+* The espressojs constructor function now takes an optional configuration object
+  - the `.skipMissingHandlers` property indicates if missing segment handlers may be skipped or will produce a `500 Internal server error` response. Default is `true`.
+  - Fields that configure the server properties
+    - `.protocol` is the protocol, default `"http"`
+    - `.hostname` is the name of the server, default `"localhost"`
+    - `.apiRoot` is the relative root of the API, default `""`
+* Options configured in the constructor can be accessed using `.getOption()` and `.setOption()`
+* The `api.chainComplete(this)` can be used to test if a complete chain was handled or if handlers were missing and skipped
+
+## Internal
+
+* If `.skipMissingHandlers` is `true` cascading requests will no longer create a 500 if a segment handler is missing
+
 # Version 1.0.0
 
 **Initial release**
