@@ -295,6 +295,56 @@ describe('.dispatchRequest', function() {
             p.catch( function(){} );
         });
 
+        it('should not be used when the handler option `cascading` is set to `false`', function(done) {
+            var e = new Espresso();
+
+            e.resource('/a', function() {
+                done('failed');
+            });
+
+            e.resource('/a/b', function() {
+                done('failed');
+            });
+
+            e.resource('/a/b/c', function(){
+                done();
+            }, { cascading: false});
+
+            var req = new Espresso.Request({ method:'get', path: '/a/b/c' });
+
+            e.dispatchRequest(req);
+        });
+
+        it('should use the latest handler with `cascading` is set to `false` as first', function(done) {
+            var e = new Espresso();
+
+            e.resource('/a', function() {
+                done('failed');
+            });
+
+            e.resource('/a/b', function() {
+                done('failed');
+            });
+
+            e.resource('/a/b/c', function(){
+                return 'first';
+            }, { cascading: false});
+
+            e.resource('/a/b/c/d', function(a,b,c,d){
+                expect( d ).to.equal('first');
+                return 'second';
+            });
+
+            e.resource('/a/b/c/d/e', function(a,b,c,d){
+                expect( d ).to.equal('second');
+                done();
+            });
+
+            var req = new Espresso.Request({ method:'get', path: '/a/b/c/d/e' });
+
+            e.dispatchRequest(req);
+        });
+
         it('should reject the returned promise if a handler returns a rejected promise', function(done) {
             var e = new Espresso();
 
