@@ -105,4 +105,29 @@ describe('.resource', function(){
 
     });
 
+    it('should create a handler with default values if nothing given', function(){
+        var e = new Espresso();
+
+        var pattern = "/proc/:sys";
+        var options = {
+            cascading: true
+        };
+
+        var fn = function() {};
+
+        var context = {};
+
+        e.resource(pattern, fn);
+
+        var entry = e._resources[0];
+
+        expect( entry.context ).to.deep.equal( context );
+        expect( entry.pattern ).to.be.an('object');
+        expect( entry.pattern.getPattern() ).to.equal(pattern);
+        expect( entry.callbacks ).to.be.an('object');
+        expect( entry.callbacks.get ).to.equal(fn);
+        expect( entry.options ).to.deep.equal(options);
+
+    });
+
 });
