@@ -5,42 +5,39 @@ var Espresso = require('../index');
 var _ = require('lodash');
 var expect = require('chai').expect;
 
-describe('Options', function() {
+describe('Instance', function() {
 
-    it('should be an object', function() {
+    it('should have a .getOption() function', function() {
         var e = new Espresso();
-        expect( e.options ).to.be.an('object');
+        expect( e.getOption ).to.be.a('function');
     });
 
-    it('should have a .get() function', function() {
+    it('should have a .setOption() function', function() {
         var e = new Espresso();
-        expect( e.options.get ).to.be.a('function');
-    });
-
-    it('should have a .set() function', function() {
-        var e = new Espresso();
-        expect( e.options.set ).to.be.a('function');
+        expect( e.setOption ).to.be.a('function');
     });
 
     describe('setter', function() {
         var e = new Espresso();
 
         var options = [
-            { key: 'skipMissingHandlers', value:true },
-            { key: 'protocol', value: 'https' },
-            { key: 'hostname', value: 'example.org' },
-            { key: 'apiRoot', value: '/api/v1' }
+            { key: 'skipMissingHandlers', value: 'fancy' },
+            { key: 'protocol', value: 'value' },
+            { key: 'hostname', value: 'I' },
+            { key: 'apiRoot', value: 'use' }
         ];
 
         _.each( options, function(what) {
 
             it('should set .' + what.key + ' to ' + what.value, function() {
-                expect( e.options.get(what.key) ).not.to.equal(what.value);
-                e.options.set(what.key, what.value);
-                expect( e.options.get(what.key) ).to.equal(what.value);
+                expect( e.getOption(what.key) ).not.to.equal(what.value);
+
+                e.setOption(what.key, what.value);
+                expect( e.getOption(what.key) ).to.equal(what.value);
             });
 
         });
+
     });
 
     describe('defaults', function() {
@@ -57,18 +54,17 @@ describe('Options', function() {
         _.each( defs, function(what) {
 
             it('should have .' + what.key + ' w/ ' + what.value, function() {
-                expect( e.options.get(what.key) ).to.equal(what.value);
+                expect( e.getOption(what.key) ).to.equal(what.value);
             });
 
         });
 
     });
 
-    describe('constructor object', function() {
-
+    describe('constructor', function() {
 
         var options = [
-            { key: 'skipMissingHandlers', value:true },
+            { key: 'skipMissingHandlers', value:false },
             { key: 'protocol', value: 'https' },
             { key: 'hostname', value: 'example.com' },
             { key: 'apiRoot', value: '/api/v1' },
@@ -86,7 +82,7 @@ describe('Options', function() {
         _.each( options, function(what) {
 
             it('should have .' + what.key + ' set to ' + what.value, function() {
-                expect( e.options.get(what.key) ).to.equal(what.value);
+                expect( e.getOption(what.key) ).to.equal(what.value);
             });
 
         });
