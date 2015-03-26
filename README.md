@@ -40,6 +40,43 @@ var Espresso = require('espressojs');
 var api = new Espresso();
 ```
 
+The constructor function takes an optional argument with configuration options.
+
+```javascript
+var Espresso = require('espressojs');
+
+var options = {
+    // ...
+};
+var api = new Espresso(options);
+```
+
+The following options are supported:
+```javascript
+{
+  "skipMissingHandlers": true,       // Skip non-existing handlers for URI segments
+
+  // These options will be used later to
+  // dynamically build URLs
+  "hostname": "localhost",          // Name of the server
+  "protocol": "http",               // Protocol
+  "apiRoot":  ""                    // Root of the API
+}
+```
+
+### Getting and setting options
+Options given to the constructor can be accessed using the `.getOption()` function.
+
+```javascript
+api.getOption('skipMissingHandlers');
+```
+
+To update options, use the `.setOption()` function:
+
+```javascript
+api.setOption('skipMissingHandlers', false);
+```
+
 ### Registering resources
 
 Resources can be registered using the `.resource` function:
@@ -234,5 +271,20 @@ api.dispatchRequest(r).then(function(response) {
     // Request successful
 }).catch(function(response){
     // Request failed
+});
+```
+
+### Utility functions
+
+#### chainComplete
+The `api.chainComplete()` function can be used to detect if the current handler
+has been invoked in a chain. It expects one argument, the context of the handler.
+
+```javascript
+api.resource('/some/thing', function(response, request, api) {
+
+    if( api.chainComplete(this) )
+        // ...
+
 });
 ```
