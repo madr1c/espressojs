@@ -122,7 +122,6 @@ describe('Serializer', function() {
             e.setSerializer( function(request, response, api, value) {
 
                 expect( arguments.length ).to.equal(4);
-                expect( api ).to.equal( e );
                 expect( value ).to.equal( 'meh' );
 
                 done();
