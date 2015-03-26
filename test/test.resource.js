@@ -3,6 +3,7 @@
  */
 var expect = require('chai').expect;
 var Espresso = require('../index');
+var _ = require('lodash');
 
 describe('Resource table', function() {
 
@@ -54,6 +55,17 @@ describe('.resource', function(){
         var fn = function() { inst.resource('pattern', 42); };
 
         expect( fn ).to.throw(/callback/);
+    });
+
+    it('should throw if `options` is not a valid object', function() {
+
+        _.each([42, null, 'string', true, [] ], function(what) {
+            expect( function() {
+                new Espresso().resource('/pattern', function(){}, what );
+            } ).to.throw(/options/);
+        });
+
+
     });
 
     it('should not throw if a function or an object with handlers is given', function() {
