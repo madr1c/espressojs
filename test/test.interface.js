@@ -15,13 +15,7 @@ describe('Interface', function() {
         });
 
     });
-
-    describe('.resource', function() {
-
-        
-
-    });
-
+    
     describe('.deferred', function() {
 
         it('should be a function', function() {
