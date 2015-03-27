@@ -1,3 +1,19 @@
+# Version 2.0.0
+
+**This release contains breaking changes**
+
+## External
+
+* The `.resource()` function now takes an `options` argument with per-resource-configurations [**breaking**]
+  - `.name` is a unique name the user can use to identify this resource and its handler later
+  - `.cascading` indicates if cascading is allowed for this resource. If not, only the resource handler will be executed.
+* The `.delete()` function can be used to delete a resource from the API. It takes an object that may contain `.name` with a resource handler name or `.pattern` containing a pattern of the resource or `.path` with a path matching a resource to delete. `.delete()` will search in this order.
+
+## Internal
+
+* The compiled regex is stored internally in an extra object. This is a fast way to prevent users from creating multiple handlers for the same resource.
+* Resource handlers names are stored in an internal object
+
 # Version 1.1.0
 
 ## External
