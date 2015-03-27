@@ -136,4 +136,19 @@ describe('Overwriting', function() {
 
     });
 
+
+    it('should correctly update the name reference if a new handler is given', function() {
+        var api = new Espresso();
+
+        var uniqueString = 'root@2';
+
+        api.resource('/api', function(){}, {name:'root'});
+        api.resource('/api', function(){ return uniqueString; } );
+
+        // Length checks won't work here properly
+        expect( api._names.root.callbacks.get() ).to.equal( uniqueString );
+
+
+    });
+
 });
