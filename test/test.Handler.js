@@ -3,6 +3,7 @@
  */
 var expect = require('chai').expect;
 var Espresso = require('../index');
+var _ = require('lodash');
 
 describe('.Handler', function() {
 
@@ -123,7 +124,7 @@ describe('.Handler', function() {
             expect( new Espresso.Handler().setPattern.length ).to.equal(1);
         });
 
-        it('should update the context', function() {
+        it('should update the pattern', function() {
             var handler = new Espresso.Handler();
 
             handler.setPattern('pattern');
