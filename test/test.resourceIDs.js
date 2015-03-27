@@ -111,12 +111,17 @@ describe('Overwriting', function() {
     it('should overwrite if a handler for another resource has the same name', function(){
         var api = new Espresso();
 
-        api.resource('/api', function(){}, {name:'root'});
-        api.resource('/api/sub', function(){}, {name:'root'});
+        var fn = function(){};
 
-        expect( _.keys(e._names).length ).to.equal(1);
-        expect( _.keys(e._ids).length ).to.equal(2);
-        expect( _.keys(e._names)[0] ).to.equal('root');
+        api.resource('/api', function(){}, {name:'root'});
+        api.resource('/api/sub', fn, {name:'root'});
+
+        expect( _.keys(api._names).length ).to.equal(1);
+        expect( _.keys(api._ids).length ).to.equal(2);
+        expect( _.keys(api._names)[0] ).to.equal('root');
+
+        // Deep check the handler function
+        expect( api._names.root.callbacks.get ).to.equal(fn);
     });
 
     it('should replace the name if a handler for the same resource with another name was added', function() {
