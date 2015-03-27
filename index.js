@@ -25,8 +25,15 @@ module.exports = (function() {
 
         this._options = _.extend({}, defaults, options);
 
-        this._ids = {};
+        // List of IDs used to find duplicate handlers fast
+        this._ids = {
+            // id: handler
+        };
 
+        // List of names for handlers set by the user
+        this._names = {
+            // name: handler
+        };
     };
 
     // Expose parts
