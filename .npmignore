@@ -31,4 +31,10 @@ node_modules
 .DS_Store
 
 # Images
-img/
+img
+
+# Travis config
+.travis.yml
+
+# Just to make sure
+.git
