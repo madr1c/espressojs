@@ -148,6 +148,18 @@ describe('Overwriting', function() {
         // Length checks won't work here properly
         expect( api._names.root.callbacks.get() ).to.equal( uniqueString );
 
+    });
+
+    it('should correctly update the name reference if a new handler with placeholders is given', function() {
+        var api = new Espresso();
+
+        var uniqueString = 'root@2';
+
+        api.resource('/:key', function(){}, {name:'root'});
+        api.resource('/:app', function(){ return uniqueString; } );
+
+        // Length checks won't work here properly
+        expect( api._names.root.callbacks.get() ).to.equal( uniqueString );
 
     });
 
