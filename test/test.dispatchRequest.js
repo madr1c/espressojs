@@ -396,4 +396,38 @@ describe('.dispatchRequest', function() {
         });
 
     });
+
+    describe('context', function() {
+
+        it('should contain a __espressojs key', function(done) {
+            var e = new Espresso();
+            e.resource('/a', function(){
+                expect(this.__espressojs).to.be.an('object');
+                done();
+            });
+
+            e.dispatchRequest( new Espresso.Request({method:'get', path:'/a'}) );
+        });
+
+        it('should contain a __espressojs.chainIsComplete key', function(done) {
+            var e = new Espresso();
+            e.resource('/a', function(){
+                expect(this.__espressojs.chainIsComplete).not.to.be.undefined;
+                done();
+            });
+
+            e.dispatchRequest( new Espresso.Request({method:'get', path:'/a'}) );
+        });
+
+        it('should contain a __espressojs.handler key', function(done) {
+            var e = new Espresso();
+            e.resource('/a', function(){
+                expect(this.__espressojs.handler).not.to.be.undefined;
+                done();
+            });
+
+            e.dispatchRequest( new Espresso.Request({method:'get', path:'/a'}) );
+        });
+
+    });
 });
