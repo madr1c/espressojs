@@ -37,9 +37,9 @@ module.exports = (function() {
     };
 
     // Expose parts
-    Espresso.Request = require('./lib/Request');
+    Espresso.Request  = require('./lib/Request');
     Espresso.Response = require('./lib/Response');
-
+    Espresso.Handler  = require('./lib/Handler');
 
     var path = "./lib/espresso/";
     var isJS = function(w) { return _.endsWith(w,'.js'); };
