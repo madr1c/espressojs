@@ -22,7 +22,7 @@ This allows you to write DRY and small handlers for resources.
 ![](https://raw.githubusercontent.com/dak0rn/espressojs/master/img/cascading-requests.png)
 
 More information about the way espressojs uses resources handlers can be
-read in [the wiki](https://github.com/dak0rn/espressojs/wiki/Cascading-requests).
+read in [the wiki](https://github.com/dak0rn/espressojs/wiki/0.1-Cascading-requests).
 
 ## Installing
 
