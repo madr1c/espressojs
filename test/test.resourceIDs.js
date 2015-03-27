@@ -130,9 +130,10 @@ describe('Overwriting', function() {
         api.resource('/api', function(){}, {name:'root'});
         api.resource('/api', function(){}, {name:'non-root'});
 
-        expect( _.keys(api._names).length ).to.equal(1);
-        expect( _.keys(api._ids).length ).to.equal(1);
-        expect( _.keys(api._names)[0] ).to.equal('non-root');
+        // Length checks won't work here properly
+        expect( api._names.root ).to.be.undefined;
+        expect( api._names['non-root'] ).to.not.be.undefined;
+
     });
 
 });
