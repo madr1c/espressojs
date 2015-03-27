@@ -71,7 +71,7 @@ describe('Espresso.prototype.delete', function() {
         api.resource('/api', function(){});
         api.resource(target, function(){
             done('failed');
-        });
+        }, {name:'something'});
         api.resource('/api/sub/2', function() {
             done();
         });
@@ -83,6 +83,7 @@ describe('Espresso.prototype.delete', function() {
         api.delete({pattern: target});
 
         expect( getUndefineds(api, '_ids') ).not.to.equal(p_ids);
+        // The name entry has also be deleted
         expect( getUndefineds(api, '_names') ).not.to.equal(p_names);
         expect( _.keys(api._resources).length ).not.to.equal(p_resources);
 
@@ -96,7 +97,7 @@ describe('Espresso.prototype.delete', function() {
         api.resource('/api', function(){});
         api.resource("/api/:subname", function(){
             done('failed');
-        });
+        }, {name:'subname'});
         api.resource('/api/sub/2', function() {
             done();
         });
