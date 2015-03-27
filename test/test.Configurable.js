@@ -56,4 +56,27 @@ describe('Configurable', function() {
         });
     });
 
+    describe('.setAll', function() {
+
+        it('should be a function', function() {
+            expect( new Configurable().setAll ).to.be.a('function');
+        });
+
+        it('should update the correct properties', function() {
+            var conf = new Configurable();
+
+            var options = {
+                'a': 'b',
+                'd': function() {}
+            };
+
+            conf.setAll(options);
+
+            _.each( options, function(key, value) {
+                expect( conf._options[key] ).to.equal(value);
+            });
+        });
+
+    });
+
 });
