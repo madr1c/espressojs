@@ -22,15 +22,67 @@ describe('Espresso.prototype.delete', function() {
             expect( function(){ e.delete(item); } ).to.throw(/object/);
         });
 
-        [ { name: '' }, { id: '' }, { pattern: '' } ].forEach( function(item) {
+        [ { name: '' }, { path: '' }, { pattern: '' } ].forEach( function(item) {
             expect( function(){ e.delete(item); } ).to.throw(/empty/);
         });
 
-        [ { name: 'name' }, { id: 'id' }, { pattern: 'pattern' } ].forEach( function(item) {
+        [ { name: 'name' }, { path: 'path' }, { pattern: 'pattern' } ].forEach( function(item) {
             expect( function(){ e.delete(item); } ).not.to.throw(/object/);
         });
 
 
+    });
+
+    it('should delete a resource handler by name', function(done) {
+
+        var api = new Espresso();
+
+        api.resource('/api', function(){});
+        api.resource('/api/sub', function(){
+            done('failed');
+        }, {name:'sub'});
+        api.resource('/api/sub/2', function() {
+            done();
+        });
+
+        api.delete({name:'sub'});
+
+        api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
+    });
+
+    it('should delete a resource handler by pattern', function(done) {
+
+        var api = new Espresso();
+        var target = "/api/:sub";
+
+        api.resource('/api', function(){});
+        api.resource(target, function(){
+            done('failed');
+        });
+        api.resource('/api/sub/2', function() {
+            done();
+        });
+
+        api.delete({pattern: target});
+
+        api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
+    });
+
+    it('should delete a resource handler by matching URI', function(done) {
+
+        var api = new Espresso();
+
+        api.resource('/api', function(){});
+        api.resource("/api/:subname", function(){
+            done('failed');
+        });
+        api.resource('/api/sub/2', function() {
+            done();
+        });
+
+        api.delete({path: "/api/cool"});
+
+        api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
     });
 
 });
