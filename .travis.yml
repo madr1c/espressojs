@@ -1,5 +1,9 @@
 language: node_js
 node_js:
-  - "node"
+    - "node"
 before_install: npm install -g grunt-cli mocha
 install: npm install
+branches:
+    only:
+        - master
+        - dev

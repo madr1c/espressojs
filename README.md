@@ -1,6 +1,8 @@
 # espressojs
 ## A framework for building REST APIs
 
+![Build status](https://travis-ci.org/dak0rn/espressojs.svg?branch=master)
+
 espressojs is a small Open Source framework that can be used to build HTTP REST APIs
 in JavaScript. It's core concept are
 [cascading requests](https://github.com/dak0rn/espressojs/wiki/Cascading-requests)
