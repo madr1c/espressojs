@@ -3,6 +3,7 @@
  */
 var expect = require('chai').expect;
 var Espresso = require('../index');
+var _ = require('lodash');
 
 describe('Espresso.prototype.delete', function() {
 
@@ -45,7 +46,15 @@ describe('Espresso.prototype.delete', function() {
             done();
         });
 
+        var p_ids = _.keys(api._ids).length;
+        var p_names = _.keys(api._names).length;
+        var p_resources = api._resources.length;
+
         api.delete({name:'sub'});
+
+        expect( _.keys(api._ids).length ).not.to.equal(p_ids);
+        expect( _.keys(api._names).length ).not.to.equal(p_names);
+        expect( _.keys(api._resources).length ).not.to.equal(p_resources);
 
         api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
     });
@@ -63,7 +72,15 @@ describe('Espresso.prototype.delete', function() {
             done();
         });
 
+        var p_ids = _.keys(api._ids).length;
+        var p_names = _.keys(api._names).length;
+        var p_resources = api._resources.length;
+
         api.delete({pattern: target});
+
+        expect( _.keys(api._ids).length ).not.to.equal(p_ids);
+        expect( _.keys(api._names).length ).not.to.equal(p_names);
+        expect( _.keys(api._resources).length ).not.to.equal(p_resources);
 
         api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
     });
@@ -80,7 +97,15 @@ describe('Espresso.prototype.delete', function() {
             done();
         });
 
+        var p_ids = _.keys(api._ids).length;
+        var p_names = _.keys(api._names).length;
+        var p_resources = api._resources.length;
+
         api.delete({path: "/api/cool"});
+
+        expect( _.keys(api._ids).length ).not.to.equal(p_ids);
+        expect( _.keys(api._names).length ).not.to.equal(p_names);
+        expect( _.keys(api._resources).length ).not.to.equal(p_resources);
 
         api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
     });
