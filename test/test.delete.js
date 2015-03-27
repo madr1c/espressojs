@@ -19,7 +19,7 @@ describe('Espresso.prototype.delete', function() {
         var e = new Espresso();
 
         [ {}, null, undefined, 42, 'string', false ].forEach( function(item) {
-            expect( function(){ e.delete(item); } ).to.throw(/object/);
+            expect( function(){ e.delete(item); } ).to.throw(/(object|empty)/);
         });
 
         [ { name: '' }, { path: '' }, { pattern: '' } ].forEach( function(item) {
@@ -27,7 +27,7 @@ describe('Espresso.prototype.delete', function() {
         });
 
         [ { name: 'name' }, { path: 'path' }, { pattern: 'pattern' } ].forEach( function(item) {
-            expect( function(){ e.delete(item); } ).not.to.throw(/object/);
+            expect( function(){ e.delete(item); } ).not.to.throw();
         });
 
 
@@ -83,6 +83,15 @@ describe('Espresso.prototype.delete', function() {
         api.delete({path: "/api/cool"});
 
         api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
+    });
+
+    it('should not error if there is no such resource', function() {
+        var api = new Espresso();
+
+        [ { name: 'name' }, { path: 'path' }, { pattern: 'pattern' } ].forEach( function(item) {
+            expect( function(){ api.delete(item); } ).not.to.throw();
+        });
+
     });
 
 });
