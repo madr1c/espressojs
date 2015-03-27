@@ -3,6 +3,7 @@
  */
 var expect = require('chai').expect;
 var Espresso = require('../index');
+var metacarattere = require('metacarattere');
 var _ = require('lodash');
 
 var getUndefineds = function(api, key) {
@@ -121,6 +122,29 @@ describe('Espresso.prototype.delete', function() {
         [ { name: 'name' }, { path: 'path' }, { pattern: 'pattern' } ].forEach( function(item) {
             expect( function(){ api.delete(item); } ).not.to.throw();
         });
+
+    });
+
+    it('should delete the handler using .delete(this)', function(done) {
+
+        var api = new Espresso();
+        var str = "/api/:subname";
+        var pattern = new metacarattere(str);
+        var name = "unique";
+
+        api.resource(str, function(req, res, api){
+            api.delete(this);
+        }, {name: name });
+
+        api.resource('/api/:sub/2', function() {
+
+            expect( api._names[name] ).to.be.undefined;
+            expect( api._ids[pattern.getExpression().toString()] ).to.be.undefined;
+            expect( api._resources.length ).to.equal(1);
+            done();
+        });
+
+        api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
 
     });
 
