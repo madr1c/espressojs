@@ -84,8 +84,8 @@ api.setOption('skipMissingHandlers', false);
 Resources can be registered using the `.resource` function:
 
 ```javascript
-Espresso.prototype.resource = function(pattern, fn, context);
-Espresso.prototype.resource = function(pattern, handlers, context);
+Espresso.prototype.resource = function(pattern, fn, options, context);
+Espresso.prototype.resource = function(pattern, handlers, options, context);
 ```
 
 `pattern` is a relative URL identifying a resource. It may contain placeholders
@@ -94,6 +94,18 @@ starting with a colon, like `/api/:version/users/:userid`.
 The second argument can either be a function (`fn`) that is meant to handle all
 requests or an object (`handlers`) mapping HTTP verbs to handler functions. Any HTTP verb that
 does not have a mapper will return a `405 Method not supported` response if requested.
+
+`options` is an optional argument with configuration items for this handler.
+The following flags are supported:
+
+```javascript
+{
+    name: '',       // Unique name for this resource. Used to get access to it later.
+    cascading: true // Indicates if cascading should be available for parent handlers
+}
+```
+
+More details can be found [here](https://github.com/dak0rn/espressojs/wiki/3.1.1-Handler-options).
 
 `context` is an optional argument that is used as `this` when invoking a handler function.
 If not submitted, `this` will be the empty object (`{}`).
@@ -142,6 +154,49 @@ function(request, response, api, value)
 is **shared between every** handler and the [serializer function](#setting-the-serializer-function).
 * `api` is the currently used API object
 * `value` is the return or fulfillment value of the previous handler.
+
+### Deleting resources
+
+Resources can be deleted with the `.delete()` function.
+
+```javascript
+Espresso.prototype.delete = function(what) {};
+```
+
+The given argument has to be an object identifying a resource.
+
+```javascript
+{
+    name: 'name of the handler',   // Unique name of the handler
+    // or
+    pattern: '/handler/:pattern',  // Pattern of the handler
+    // or
+    path: '/handler/something'     // Handler that would handle this path
+}
+```
+
+The properties are checked exactly in this order, so if you submit both
+`.pattern` and `.name` only `.name` will be used to find a handler.
+
+If you do not submit a valid object with valid values or if no handler was found the function will exit silently.
+
+```javascript
+api.resource('/a', function(){}, { name: 'a' }); // #1
+api.resource('/a/:b', function(){});             // #2
+api.resource('/a/b/:c', function(){});           // #3
+
+// This would remove #1 even though the pattern for
+// #2 is also given
+api.delete({ pattern: '/a/:b', name: 'a'});
+
+// This would remove #3
+api.delete({ path: '/a/b/42' });
+
+// This would remove #2
+api.delete({ pattern: '/a/:b' });
+```
+
+More information can be found [here](https://github.com/dak0rn/espressojs/wiki/3.3-Deleting-resources).
 
 ### Setting the serializer function
 Serializer functions are used to create a serialized version of the last handler's
