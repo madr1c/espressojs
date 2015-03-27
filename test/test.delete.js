@@ -30,6 +30,7 @@ describe('Espresso.prototype.delete', function() {
             expect( function(){ e.delete(item); } ).not.to.throw(/object/);
         });
 
+
     });
 
 });
