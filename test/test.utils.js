@@ -69,10 +69,10 @@ describe('Utils', function() {
 
                 expect( _.keys(e._ids).length ).to.equal(0);
 
-                utils.handler.register(h);
+                utils.handler.register(e,h);
 
                 expect( _.keys(e._ids).length ).to.equal(1);
-                expect( e._ids[ h.getExpression() ] ).to.equal(h);
+                expect( e._ids[ h.getPattern().getExpression() ] ).to.equal(h);
 
             });
 
@@ -84,8 +84,8 @@ describe('Utils', function() {
 
                 expect( _.keys(e._names).length ).to.equal(0);
 
-                utils.handler.register(h);
-                utils.handler.register(s);
+                utils.handler.register(e,h);
+                utils.handler.register(e,s);
 
                 expect( _.keys(e._names).length ).to.equal(1);
                 expect( e._names.s ).to.equal(s);
@@ -99,9 +99,27 @@ describe('Utils', function() {
 
                 expect( _.keys(e._resources).length ).to.equal(0);
 
-                utils.handler.register(h);
+                utils.handler.register(e,h);
 
                 expect( _.keys(e._resources).length ).to.equal(0);
+
+            });
+
+            it('should throw if arguments are missing', function() {
+
+                expect( utils.handler.register ).to.throw();
+                expect( function() { utils.handler.register(new Espresso()); } ).to.throw();
+
+            });
+
+            it('should throw if invalid arguments are given', function() {
+                var things = [33, 'string', undefined, null, false, [] ];
+
+                _.each( things, function(api) {
+                    _.each( things, function(handler) {
+                        expect( function(){ utils.handler.register(api,handler); } ).to.throw();
+                    });
+                });
 
             });
 
