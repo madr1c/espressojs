@@ -25,7 +25,7 @@ describe('Instance', function() {
             { key: 'skipMissingHandlers', value:true },
             { key: 'protocol', value: 'http' },
             { key: 'hostname', value: 'localhost' },
-            { key: 'apiRoot', value: '' },
+            { key: 'apiRoot', value: '/' },
             { key: 'cascading', value: true}
         ];
 
