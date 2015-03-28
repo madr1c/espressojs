@@ -4,6 +4,7 @@
 * `.delete()` can now be used to delete the currently processed handler using `api.delete(this)`.
 * Cascading can be turned off globally using the global `.cascading` option
 * The previously internal-only class `Handler` is now accessible using `Espresso.Handler`. It uses the new `Configurable` interface.
+* The default value for `apiRoot` used in Espresso is now `"/"`
 
 ## Internal
 * The utility function `buildResourceTable()` is used to build the list of resource handlers from the internal `._ids` list. This should improve the performance of functions like `.delete()` and makes stuff easier.

@@ -65,10 +65,11 @@ The following options are supported:
   // dynamically build URLs
   "hostname": "localhost",          // Name of the server
   "protocol": "http",               // Protocol
-  "apiRoot":  ""                    // Root of the API
+  "apiRoot":  "/"                    // Root of the API
 }
 ```
 
+More details about this can be found [here](https://github.com/dak0rn/espressojs/wiki/2-API-options).
 These options can be accessed using the [Configurable](#configurable) interface
 every API instance provides.
 
