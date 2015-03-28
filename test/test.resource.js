@@ -85,12 +85,11 @@ describe('.resource', function(){
 
         var entry = e._resources[0];
 
-        expect( entry.context ).to.deep.equal( context );
-        expect( entry.pattern ).to.be.an('object');
-        expect( entry.pattern.getPattern() ).to.equal(pattern);
-        expect( entry.callbacks ).to.be.an('object');
-        expect( entry.callbacks.get ).to.equal(get);
-        expect( entry.options ).to.deep.equal(options);
+        expect( entry.getContext() ).to.deep.equal( context );
+        expect( entry.getPattern() ).to.be.an('object');
+        expect( entry.getPattern().getPattern() ).to.equal(pattern);
+        expect( entry.getCallback('get') ).to.equal(get);
+        expect( entry.getAll() ).to.deep.equal(options);
 
     });
 
@@ -110,12 +109,11 @@ describe('.resource', function(){
 
         var entry = e._resources[0];
 
-        expect( entry.context ).to.deep.equal( context );
-        expect( entry.pattern ).to.be.an('object');
-        expect( entry.pattern.getPattern() ).to.equal(pattern);
-        expect( entry.callbacks ).to.be.an('object');
-        expect( entry.callbacks.get ).to.equal(fn);
-        expect( entry.options ).to.deep.equal(options);
+        expect( entry.getContext() ).to.deep.equal( context );
+        expect( entry.getPattern() ).to.be.an('object');
+        expect( entry.getPattern().getPattern() ).to.equal(pattern);
+        expect( entry.getCallback('get') ).to.equal(fn);
+        expect( entry.getAll() ).to.deep.equal(options);
 
     });
 
