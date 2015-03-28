@@ -436,4 +436,28 @@ describe('.dispatchRequest', function() {
         });
 
     });
+
+    describe('global "cascading" flag', function() {
+
+        it('should prevent cascading when set to false', function(done) {
+
+            var e = new Espresso({cascading: false});
+
+            e.resource('/api', function() {
+                done('failed');
+            });
+
+            e.resource('/api/v1', function() {
+                done('failed');
+            });
+
+            e.resource('/api/v1/doc', function() {
+                done();
+            });
+
+            e.dispatchRequest( new Espresso.Request({method: 'get', path: '/api/v1/doc'}) );
+
+        });
+
+    });
 });
