@@ -121,7 +121,7 @@ describe('Overwriting', function() {
         expect( _.keys(api._names)[0] ).to.equal('root');
 
         // Deep check the handler function
-        expect( api._names.root.callbacks.get ).to.equal(fn);
+        expect( api._names.root.getCallback('get') ).to.equal(fn);
     });
 
     it('should replace the name if a handler for the same resource with another name was added', function() {
@@ -146,7 +146,8 @@ describe('Overwriting', function() {
         api.resource('/api', function(){ return uniqueString; } );
 
         // Length checks won't work here properly
-        expect( api._names.root.callbacks.get() ).to.equal( uniqueString );
+        var cb = api._names.root.getCallback('get');
+        expect( cb() ).to.equal( uniqueString );
 
     });
 
@@ -159,7 +160,8 @@ describe('Overwriting', function() {
         api.resource('/:app', function(){ return uniqueString; } );
 
         // Length checks won't work here properly
-        expect( api._names.root.callbacks.get() ).to.equal( uniqueString );
+        var cb = api._names.root.getCallback('get');
+        expect( cb() ).to.equal( uniqueString );
 
     });
 
