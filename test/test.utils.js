@@ -80,7 +80,7 @@ describe('Utils', function() {
 
                 var e = new Espresso();
                 var h = new Espresso.Handler( '/:what', function() {});
-                var s = new Espresso.Handler( '/:what', function() {}, {name:'s'});
+                var s = new Espresso.Handler( '/:what/:sub', function() {}, {name:'s'});
 
                 expect( _.keys(e._names).length ).to.equal(0);
 
@@ -154,7 +154,7 @@ describe('Utils', function() {
 
                 var e = new Espresso();
                 var h = new Espresso.Handler( '/:what', function() {});
-                var s = new Espresso.Handler( '/:what', function() {}, {name:'s'});
+                var s = new Espresso.Handler( '/:what/:sub', function() {}, {name:'s'});
 
                 utils.handler.register(e,h);
                 utils.handler.register(e,s);
