@@ -9,6 +9,7 @@
 module.exports = (function() {
     var _ = require('lodash');
     var fs = require('fs');
+    var Configurable = require('./lib/Configurable');
     var defaults = require('./lib/DefaultOptions');
     var replaceRegex = /(.*)\.js/;
 
@@ -20,10 +21,12 @@ module.exports = (function() {
      */
     var Espresso = function(options) {
 
+        Configurable.call(this);
+
         this._resources = [];
         this._serializer = require('./lib/Serializer');
 
-        this._options = _.extend({}, defaults, options);
+        this.setAll( _.extend({}, defaults, options) );
 
         // List of IDs used to find duplicate handlers fast
         this._ids = {
@@ -36,6 +39,10 @@ module.exports = (function() {
         };
     };
 
+    var proto = {
+        constructor: Espresso
+    };
+
     // Expose parts
     Espresso.Request  = require('./lib/Request');
     Espresso.Response = require('./lib/Response');
@@ -45,13 +52,15 @@ module.exports = (function() {
     var isJS = function(w) { return _.endsWith(w,'.js'); };
     var normalize = function(w) { return replaceRegex.exec(w)[1]; };
 
-    var injectToPrototype = function(w) { Espresso.prototype[w] = require(path+w); };
+    var injectToPrototype = function(w) { proto[w] = require(path+w); };
 
     // Load prototype injections
     _( fs.readdirSync(path) )
         .filter( isJS )
         .map(normalize)
         .each(injectToPrototype).value();
+
+    Espresso.prototype = _.create( Configurable.prototype, proto);
 
     return Espresso;
 

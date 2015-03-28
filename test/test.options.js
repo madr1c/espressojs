@@ -17,29 +17,6 @@ describe('Instance', function() {
         expect( e.setOption ).to.be.a('function');
     });
 
-    describe('setter', function() {
-        var e = new Espresso();
-
-        var options = [
-            { key: 'skipMissingHandlers', value: 'fancy' },
-            { key: 'protocol', value: 'value' },
-            { key: 'hostname', value: 'I' },
-            { key: 'apiRoot', value: 'use' }
-        ];
-
-        _.each( options, function(what) {
-
-            it('should set .' + what.key + ' to ' + what.value, function() {
-                expect( e.getOption(what.key) ).not.to.equal(what.value);
-
-                e.setOption(what.key, what.value);
-                expect( e.getOption(what.key) ).to.equal(what.value);
-            });
-
-        });
-
-    });
-
     describe('defaults', function() {
 
         var e = new Espresso();
