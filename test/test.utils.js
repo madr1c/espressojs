@@ -208,6 +208,37 @@ describe('Utils', function() {
 
         });
 
+        describe('.buildResourceTable', function() {
+
+            it('should be a function', function() {
+                expect( utils.handler.buildResourceTable ).to.be.a('function');
+            });
+
+            it('should expect one argument', function() {
+                expect( utils.handler.buildResourceTable.length ).to.equal(1);
+            });
+
+            it('should create a list of handlers', function() {
+                var e = new Espresso();
+
+                expect( e._resources.length ).to.equal(0);
+
+                utils.handler.register(e, new Espresso.Handler('/a', function(){}));
+                utils.handler.register(e, new Espresso.Handler('/a/b', function(){}));
+                utils.handler.register(e, new Espresso.Handler('/a/b/c', function(){}));
+
+                expect( e._resources.length ).to.equal(0);
+
+                utils.handler.buildResourceTable(e);
+
+                expect( e._resources.length ).to.equal(3);
+            });
+
+            it('should throw if no API is provided', function() {
+                expect( utils.handler.buildResourceTable ).to.throw();
+            });
+
+        });
     });
 
 });
