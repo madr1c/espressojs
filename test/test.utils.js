@@ -146,7 +146,7 @@ describe('Utils', function() {
 
                 utils.handler.unregister(e,h);
 
-                expect( _.keys(e._ids).length ).to.equal(0);
+                expect( e._ids[ h.getPattern().getExpression() ] ).to.be.undefined;
 
             });
 
@@ -169,7 +169,7 @@ describe('Utils', function() {
 
                 utils.handler.unregister(e,s);
 
-                expect( _.keys(e._names).length ).to.equal(0);
+                expect( e._names.s ).to.be.undefined;
 
             });
 
