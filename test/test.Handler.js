@@ -70,6 +70,24 @@ describe('.Handler', function() {
 
     });
 
+    describe('.getCallbacks', function() {
+        it('should be a function', function() {
+            expect( new Espresso.Handler().getCallbacks ).to.be.a('function');
+        });
+
+        it('should return the callback', function() {
+            var handler = new Espresso.Handler();
+            var obj = {
+                'get': 3,
+                'post': 42
+            };
+
+            handler._callbacks = obj;
+
+            expect( handler.getCallbacks() ).to.deep.equal(obj);
+        });
+    });
+
     // .setContext
     describe('.setContext', function() {
         it('should be a function', function() {
@@ -114,7 +132,6 @@ describe('.Handler', function() {
     });
 
     // .setPattern
-    // .setContext
     describe('.setPattern', function() {
         it('should be a function', function() {
             expect( new Espresso.Handler().setPattern ).to.be.a('function');
@@ -142,7 +159,7 @@ describe('.Handler', function() {
 
     });
 
-    // .getContext
+    // .getPattern
     describe('.getPattern', function() {
         it('should be a function', function() {
             expect( new Espresso.Handler().getPattern ).to.be.a('function');
