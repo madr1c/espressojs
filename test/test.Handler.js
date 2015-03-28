@@ -158,4 +158,25 @@ describe('.Handler', function() {
 
     });
 
+    // constructor
+    describe('constructor', function(){
+
+        it('should set properties correctly', function() {
+
+            var h = new Espresso.Handler(
+                '/a/b/c',
+                { get: 3 },
+                { fancy: true },
+                42
+            );
+
+            expect( h._callbacks.get ).to.equal(3);
+            expect( h._context ).to.equal(42);
+            expect( h.getOption('fancy') ).to.be.true;
+            expect( h._pattern.getPattern() ).to.equal('/a/b/c');
+
+        });
+
+    });
+
 });
