@@ -72,7 +72,7 @@ describe('Configurable', function() {
 
             conf.setAll(options);
 
-            _.each( options, function(key, value) {
+            _.each( options, function(value, key) {
                 expect( conf._options[key] ).to.equal(value);
             });
         });
