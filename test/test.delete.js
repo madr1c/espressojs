@@ -144,7 +144,10 @@ describe('Espresso.prototype.delete', function() {
             done();
         });
 
-        api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
+        var p = api.dispatchRequest( new Espresso.Request({method:'get', path:'/api/sub/2'}) );
+        p.catch( function(response) {
+            done('failed: ' + response.body);
+        });
 
     });
 
