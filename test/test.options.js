@@ -25,7 +25,8 @@ describe('Instance', function() {
             { key: 'skipMissingHandlers', value:true },
             { key: 'protocol', value: 'http' },
             { key: 'hostname', value: 'localhost' },
-            { key: 'apiRoot', value: '' }
+            { key: 'apiRoot', value: '' },
+            { key: 'cascading', value: true}
         ];
 
         _.each( defs, function(what) {
@@ -45,7 +46,8 @@ describe('Instance', function() {
             { key: 'protocol', value: 'https' },
             { key: 'hostname', value: 'example.com' },
             { key: 'apiRoot', value: '/api/v1' },
-            { key: 'nondef', value: 'yes'}
+            { key: 'nondef', value: 'yes'},
+            { key: 'cascading', value: false}
         ];
 
         var e = new Espresso({
@@ -53,7 +55,8 @@ describe('Instance', function() {
             protocol: 'https',
             hostname: 'example.com',
             apiRoot: '/api/v1',
-            nondef: 'yes'
+            nondef: 'yes',
+            cascading: false
         });
 
         _.each( options, function(what) {
