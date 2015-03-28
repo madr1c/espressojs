@@ -129,6 +129,7 @@ describe('.Handler', function() {
 
             handler.setPattern('pattern');
             expect( handler._pattern ).to.be.an('object');
+            expect( handler._pattern.getPattern() ).to.equal('pattern');
         });
 
         it('should do nothing if all arguments are missing', function() {
