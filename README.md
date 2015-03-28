@@ -35,7 +35,7 @@ espressojs will be installable with `npm` when the first release is available.
 
 ### Creating a new API
 
-espressojs exposes a constructor function that can be used to create new API objects.
+espressojs exposes a constructor function that can be used to create new API instances.
 
 ```javascript
 var Espresso = require('espressojs');
@@ -58,6 +58,9 @@ The following options are supported:
 {
   "skipMissingHandlers": true,       // Skip non-existing handlers for URI segments
 
+  // Can be used to turn off cascading request handling globally
+  "cascading": true,
+
   // These options will be used later to
   // dynamically build URLs
   "hostname": "localhost",          // Name of the server
@@ -66,18 +69,8 @@ The following options are supported:
 }
 ```
 
-### Getting and setting options
-Options given to the constructor can be accessed using the `.getOption()` function.
-
-```javascript
-api.getOption('skipMissingHandlers');
-```
-
-To update options, use the `.setOption()` function:
-
-```javascript
-api.setOption('skipMissingHandlers', false);
-```
+These options can be accessed using the [Configurable](#configurable) interface
+every API instance provides.
 
 ### Registering resources
 
@@ -196,6 +189,14 @@ api.delete({ path: '/a/b/42' });
 api.delete({ pattern: '/a/:b' });
 ```
 
+It is also possible to delete the currently executed handler:
+
+```javascript
+api.resource('/something', function(request, response, api) {
+    api.delete(this);
+});
+```
+
 More information can be found [here](https://github.com/dak0rn/espressojs/wiki/3.3-Deleting-resources).
 
 ### Setting the serializer function
@@ -301,6 +302,29 @@ Response
     .rawBody = undefined;   // Raw body, not serialized. Will be set before
                             // given the response to the invoking function
 ```
+
+### Handler
+
+A `Handler` represents a resource handler in the API. It stores information about
+the pattern, handlers for HTTP verbs and the context to be executed in. Since it
+uses the [Configurable](#configurable) interface there are also options available
+described [here](#Registering-resources).
+
+```javascript
+handler.getPattern();       // metacarattere pattern
+handler.getCallback('get'); // handler function for HTTP GET
+handler.getCallbacks();     // all callbacks
+handler.getContext();       // Handler's `this` context
+```
+
+### Configurable
+All espressojs classes that inherits from the `Configurable` class provide the
+following methods:
+
+* `.setOption(key, value)` sets the option named `key` to `value`
+* `.getOption(key)` returns the value of the option named `key`
+* `.setAll(options)` sets all options from the given object
+* `.getAll()` returns all options
 
 ### Dispatching a request
 

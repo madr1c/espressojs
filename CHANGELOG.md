@@ -1,3 +1,16 @@
+# Version 2.1.0
+
+## External
+* `.delete()` can now be used to delete the currently processed handler using `api.delete(this)`.
+* Cascading can be turned off globally using the global `.cascading` option
+* The previously internal-only class `Handler` is now accessible using `Espresso.Handler`. It uses the new `Configurable` interface.
+
+## Internal
+* The utility function `buildResourceTable()` is used to build the list of resource handlers from the internal `._ids` list. This should improve the performance of functions like `.delete()` and makes stuff easier.
+* The context hook `this.__espressojs` now contains a reference to the currently processed handler
+* The utility function `handler.register()` is used to add a resource handler to the name table and the ID table
+* The utility function `handler.unregister()` is used to remove a resource handler from the name table and the ID table
+
 # Version 2.0.0
 
 **This release contains breaking changes**
