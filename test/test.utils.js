@@ -124,6 +124,90 @@ describe('Utils', function() {
             });
 
         });
+
+        describe('.unregister', function() {
+            it('should be a function', function(){
+                expect( utils.handler.register ).to.be.a('function');
+            });
+
+            it('should take two arguments', function() {
+                expect( utils.handler.register.length ).to.equal(2);
+            });
+
+            it('should remove a handler from _ids', function() {
+
+                var e = new Espresso();
+                var h = new Espresso.Handler( '/:what', function() {});
+
+                utils.handler.register(e,h);
+
+                expect( _.keys(e._ids).length ).to.equal(1);
+                expect( e._ids[ h.getPattern().getExpression() ] ).to.equal(h);
+
+                utils.handler.unregister(e,h);
+
+                expect( _.keys(e._ids).length ).to.equal(0);
+
+            });
+
+            it('should remove a handler from _names if there is a name', function() {
+
+                var e = new Espresso();
+                var h = new Espresso.Handler( '/:what', function() {});
+                var s = new Espresso.Handler( '/:what', function() {}, {name:'s'});
+
+                utils.handler.register(e,h);
+                utils.handler.register(e,s);
+
+                expect( _.keys(e._ids).length ).to.equal(2);
+                expect( _.keys(e._names).length ).to.equal(1);
+                expect( e._names.s ).to.equal(s);
+
+                utils.handler.unregister(e,h);
+
+                expect( _.keys(e._names).length ).to.equal(1);
+
+                utils.handler.unregister(e,s);
+
+                expect( _.keys(e._names).length ).to.equal(0);
+
+            });
+
+            it('must not update the resources table', function() {
+
+                var e = new Espresso();
+                var h = new Espresso.Handler( '/:what', function() {});
+
+                utils.handler.register(e,h);
+
+                expect( _.keys(e._resources).length ).to.equal(0);
+
+                utils.handler.unregister(e,h);
+
+                expect( _.keys(e._resources).length ).to.equal(0);
+
+            });
+
+            it('should throw if arguments are missing', function() {
+
+                expect( utils.handler.unregister ).to.throw();
+                expect( function() { utils.handler.unregister(new Espresso()); } ).to.throw();
+
+            });
+
+            it('should throw if invalid arguments are given', function() {
+                var things = [33, 'string', undefined, null, false, [] ];
+
+                _.each( things, function(api) {
+                    _.each( things, function(handler) {
+                        expect( function(){ utils.handler.unregister(api,handler); } ).to.throw();
+                    });
+                });
+
+            });
+
+        });
+
     });
 
 });
