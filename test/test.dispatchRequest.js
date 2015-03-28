@@ -421,12 +421,18 @@ describe('.dispatchRequest', function() {
 
         it('should contain a __espressojs.handler key', function(done) {
             var e = new Espresso();
-            e.resource('/a', function(){
-                expect(this.__espressojs.handler).not.to.be.undefined;
-                done();
-            });
 
-            e.dispatchRequest( new Espresso.Request({method:'get', path:'/a'}) );
+            var pattern = '/a';
+            var fn = function() {
+                expect(this.__espressojs.handler).not.to.be.undefined;
+                expect(this.__espressojs.handler.getPattern().getPattern()).to.equal(pattern);
+                expect(this.__espressojs.handler.getCallback('get') ).to.equal(fn);
+                done();
+            };
+
+            e.resource( pattern, fn );
+
+            e.dispatchRequest( new Espresso.Request({method:'get', path:pattern}) );
         });
 
     });
