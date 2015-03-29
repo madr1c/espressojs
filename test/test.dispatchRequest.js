@@ -435,6 +435,30 @@ describe('.dispatchRequest', function() {
             e.dispatchRequest( new Espresso.Request({method:'get', path:pattern}) );
         });
 
+        it('should contain a __espressojs.path key with the current path', function(done) {
+
+            var e = new Espresso({cascading: false});
+
+            e.resource('/api', function() {
+                expect( this.__espressojs.path ).to.equal('/api');
+            });
+
+            e.resource('/api/v1', function() {
+                expect( this.__espressojs.path ).to.equal('/api/v1');
+            });
+
+            e.resource('/api/v1/doc', function() {
+                expect( this.__espressojs.path ).to.equal('/api/v1/doc');
+                done();
+            });
+
+            var p = e.dispatchRequest( new Espresso.Request({method: 'get', path: '/api/v1/doc'}) );
+            p.catch( function() {
+                done('failed - catched');
+            });
+
+        });
+
     });
 
     describe('global "cascading" flag', function() {
