@@ -380,6 +380,34 @@ api.dispatchRequest(r).then(function(response) {
 });
 ```
 
+The following rules concerning **errors** apply:
+
+* If the given `Request` is `undefined`, `null` or not a valid object a `Response` with status
+  code `500` will be created. It's body contains the error message `'"invalid Espresso.Request given"'`.
+* If the given `Request` does not have a `.method` set a `Response` with status
+  code `500` will be created. It's body contains the error message `'"invalid Espresso.Request given"'`.
+* If the given `Request` does have `.method` set to something that is not a `string` a `Response` with status
+  code `500` will be created. It's body contains the error message `'"invalid Espresso.Request given"'`.
+* If the given `Request` does not have a `.method` set a `Response` with status
+  code `500` will be created. It's body contains the error message `'"invalid Espresso.Request given"'`.
+* If the given `Request` does not have a `.path` set a `Response` with status
+  code `500` will be created. It's body contains the error message `'"invalid Espresso.Request given"'`.
+* If the given `Request` does have `.path` set to something that is not a `string` a `Response` with status
+  code `500` will be created. It's body contains the error message `'"invalid Espresso.Request given"'`.
+
+* If no handler for the requested path is available a `Response` with status code
+  `400` will be created. It's body contains the error message `'"resource not found"'`.
+
+* If the [global option](#creating-a-new-api) `cascading` is set to `true` and the
+  global option `skipMissingHandlers` is set to `false` ( = all handlers in a cascade chain
+  have to be executed ) and if a handler for a parent URI of the requested one
+  is missing a `Response` with status code `500` will be created. It's body contains
+  the error message `'"incomplete resource handler chain"'`.
+
+
+**Side note:** Errors listed above will not be passed to the [serializer](#setting-the-serializer-function)
+but given to the returned [Promise](#promises) directly when it is **rejected**.
+
 ### Utility functions
 
 #### chainComplete
