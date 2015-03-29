@@ -81,7 +81,9 @@ describe('.dispatchRequest', function() {
         });
 
         var promise = e.dispatchRequest(req);
-        promise.catch( function() {
+        promise.catch( function(response) {
+            expect( response.body ).to.be.a('string');
+            expect( response.body ).to.equal('"invalid Espresso.Request given"');
             done();
         });
     });
@@ -92,7 +94,8 @@ describe('.dispatchRequest', function() {
         req.method = "get";
 
         var promise = e.dispatchRequest(req);
-        promise.catch( function() {
+        promise.catch( function(response) {
+            expect( response.body ).to.equal('"invalid Espresso.Request given"');
             done();
         });
     });
@@ -103,7 +106,34 @@ describe('.dispatchRequest', function() {
         req.method = "blah";
 
         var promise = e.dispatchRequest(req);
-        promise.catch( function() {
+        promise.catch( function(response) {
+            expect( response.body ).to.equal('"invalid Espresso.Request given"');
+            done();
+        });
+    });
+
+    it('should create a 400 if the resource is missing', function(done) {
+        var e = new Espresso();
+        var req = new Espresso.Request({method: 'get', path: '/404/not/found'});
+
+        var promise = e.dispatchRequest(req);
+        promise.catch( function(response) {
+            expect( response.body ).to.equal('"resource not found"');
+            done();
+        });
+    });
+
+    it('should create a 500 if the handler chain is not complete', function(done) {
+        var e = new Espresso( { skipMissingHandlers: false });
+        var req = new Espresso.Request({method: 'get', path: '/handler/no-handler/handler'});
+
+        e.resource('/handler', function(){});
+        // Handler for /handler/:something is missing
+        e.resource('/handler/:something/handler', function(){});
+
+        var promise = e.dispatchRequest(req);
+        promise.catch( function(response) {
+            expect( response.body ).to.equal('"incomplete resource handler chain"');
             done();
         });
     });
