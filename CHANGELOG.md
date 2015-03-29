@@ -1,3 +1,8 @@
+# Version 2.2.3
+
+* Now making sure that request methods are lowercase
+* Now handling the root path (`/`) correctly
+
 # Version 2.2.2
 
 * Fixed a path error
