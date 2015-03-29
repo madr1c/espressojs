@@ -44,6 +44,16 @@ describe('Utils', function() {
         it('should be a function', function() {
             expect( utils.createErrorResponse ).to.be.a('function');
         });
+
+        it('should take three arguments', function() {
+            expect( utils.createErrorResponse.length ).to.equal(3);
+        });
+
+        it('should return a Response', function() {
+            var r = utils.createErrorResponse( new Espresso.Request(), '500');
+            //invalid Espresso.Request given
+            expect( r ).to.be.an.instanceof( Espresso.Response );
+        });
     });
 
     // .handler
