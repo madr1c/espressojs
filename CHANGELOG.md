@@ -1,3 +1,7 @@
+# Version 2.2.5
+
+* Error messages now using valid JSON
+
 # Version 2.2.4
 
 * Error messages are now provided as objects so that they can be transformed into JSON

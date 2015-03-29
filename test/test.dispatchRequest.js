@@ -83,7 +83,7 @@ describe('.dispatchRequest', function() {
         var promise = e.dispatchRequest(req);
         promise.catch( function(response) {
             expect( response.body.error ).to.be.a('string');
-            expect( response.body.error ).to.equal('"invalid Espresso.Request given"');
+            expect( response.body.error ).to.equal('invalid Espresso.Request given');
             done();
         });
     });
@@ -95,7 +95,7 @@ describe('.dispatchRequest', function() {
 
         var promise = e.dispatchRequest(req);
         promise.catch( function(response) {
-            expect( response.body.error ).to.equal('"invalid Espresso.Request given"');
+            expect( response.body.error ).to.equal('invalid Espresso.Request given');
             done();
         });
     });
@@ -107,7 +107,7 @@ describe('.dispatchRequest', function() {
 
         var promise = e.dispatchRequest(req);
         promise.catch( function(response) {
-            expect( response.body.error ).to.equal('"invalid Espresso.Request given"');
+            expect( response.body.error ).to.equal('invalid Espresso.Request given');
             done();
         });
     });
@@ -118,7 +118,7 @@ describe('.dispatchRequest', function() {
 
         var promise = e.dispatchRequest(req);
         promise.catch( function(response) {
-            expect( response.body.error ).to.equal('"resource not found"');
+            expect( response.body.error ).to.equal('resource not found');
             done();
         });
     });
@@ -133,7 +133,7 @@ describe('.dispatchRequest', function() {
 
         var promise = e.dispatchRequest(req);
         promise.catch( function(response) {
-            expect( response.body.error ).to.equal('"incomplete resource handler chain"');
+            expect( response.body.error ).to.equal('incomplete resource handler chain');
             done();
         });
     });
