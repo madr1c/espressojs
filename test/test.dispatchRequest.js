@@ -88,17 +88,17 @@ describe('.dispatchRequest', function() {
         });
     });
 
-    it('should create a 500 when no path is given', function(done) {
-        var e = new Espresso();
-        var req = new Espresso.Request();
-        req.method = "get";
-
-        var promise = e.dispatchRequest(req);
-        promise.catch( function(response) {
-            expect( response.body.error ).to.equal('invalid Espresso.Request given');
-            done();
-        });
-    });
+    // it('should create a 500 when no path is given', function(done) {
+    //     var e = new Espresso();
+    //     var req = new Espresso.Request();
+    //     req.method = "get";
+    //
+    //     var promise = e.dispatchRequest(req);
+    //     promise.catch( function(response) {
+    //         expect( response.body.error ).to.equal('invalid Espresso.Request given');
+    //         done();
+    //     });
+    // });
 
     it('should create a 500 when an unknown method is given', function(done) {
         var e = new Espresso();
@@ -511,6 +511,18 @@ describe('.dispatchRequest', function() {
 
             e.dispatchRequest( new Espresso.Request({method: 'get', path: '/api/v1/doc'}) );
 
+        });
+
+    });
+
+    describe('global "rewriteEmpty" option', function(){
+
+        it('should use the rewrite location instead of throwing an error', function(done) {
+            var api = new Espresso();
+
+            api.resource('/', function(){ done(); });
+
+            api.dispatchRequest( new Espresso.Request({method:'get', path: ''}) );
         });
 
     });
