@@ -59,10 +59,10 @@ describe('Espresso.prototype.get', function() {
         var fn = function(){};
 
         api.resource('/api', function(){});
-        api.resource(target, fn, {name:'something'});
+        api.resource(target, fn);
         api.resource('/api/sub/2', function() {});
 
-        var handler = api.get({name:'sub'});
+        var handler = api.get({pattern:target});
 
         expect( handler ).to.be.an('object');
         expect( handler.getCallback('get') ).to.equal(fn);
@@ -71,14 +71,11 @@ describe('Espresso.prototype.get', function() {
     it('should get a resource handler by matching URI', function() {
 
         var api = new Espresso();
+        var fn = function(){};
 
         api.resource('/api', function(){});
-        api.resource("/api/:subname", function(){
-            done('failed');
-        }, {name:'subname'});
-        api.resource('/api/sub/2', function() {
-            done();
-        });
+        api.resource("/api/:subname", fn );
+        api.resource('/api/sub/2', function() {});
 
         var handler = api.get({path: "/api/cool"});
 
@@ -96,7 +93,7 @@ describe('Espresso.prototype.get', function() {
 
     });
 
-    it('should get the handler using .delete(this)', function(done) {
+    it('should get the handler using .delete(this)', function() {
 
         var api = new Espresso();
         var str = "/api/:subname";
