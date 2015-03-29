@@ -384,6 +384,9 @@ api.dispatchRequest(r).then(function(response) {
 });
 ```
 
+An error is always provided as an object in `response.body`. It has a key `error`
+containing the error message.
+
 The following rules concerning **errors** apply:
 
 * If the given `Request` is `undefined`, `null` or not a valid object a `Response` with status

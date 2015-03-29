@@ -1,6 +1,6 @@
 {
   "name": "espressojs",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "A framework for creating REST APIs",
   "main": "index.js",
   "directories": {

@@ -1,3 +1,7 @@
+# Version 2.2.4
+
+* Error messages are now provided as objects so that they can be transformed into JSON
+
 # Version 2.2.3
 
 * Now making sure that request methods are lowercase
