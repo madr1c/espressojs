@@ -16,7 +16,7 @@ describe('Espresso.Request', function() {
         { property: 'protocol'},
         { property: 'query'},
         { property: 'cookie'},
-        { property: 'header'},
+        { property: 'headers'},
         { property: 'api'},
         { property: 'params'}
     ];

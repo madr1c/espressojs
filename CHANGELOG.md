@@ -1,3 +1,10 @@
+# Version 2.3.0
+
+## External
+
+* The new `rewriteEmpty` flag gives to a way to add a handler for empty paths.
+* The `Request` class now uses `.headers` instead of `.header`
+
 # Version 2.2.6
 
 * Fixed a bug where the default `OPTIONS` handler did not work correctly

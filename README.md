@@ -65,6 +65,10 @@ The following options are supported:
   // Can be used to turn off cascading request handling globally
   "cascading": true,
 
+  // Resource that handles requests w/ empty paths
+  // Useful if someone requests your API root w/out a leading slash
+  "rewriteEmpty": "/",
+
   // These options will be used later to
   // dynamically build URLs
   "hostname": "localhost",          // Name of the server
@@ -301,7 +305,7 @@ Request
     .protocol = undefined;          // Request protocol, e.g. 'https'
     .query    = {};                 // Request's query string, key-value-mappings
     .cookie   = {};                 // Key-value-mapping of cookie values
-    .header   = {};                 // Key-value-mapping of all header fields
+    .headers  = {};                 // Key-value-mapping of all header fields
     .params   = {};                 // Key-value-mapping of parameters from URL patterns
 ```
 
