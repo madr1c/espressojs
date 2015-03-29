@@ -10,6 +10,7 @@
 
 * The `__espressojs` context now contains the path of the currently processed handler
 * The `.delete()` function now uses `.get()` to find the handler it has to delete
+* The utility function `createErrorResponse()` now takes an extra message argument
 
 # Version 2.1.0
 
