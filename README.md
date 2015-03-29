@@ -26,7 +26,11 @@ read in [the wiki](https://github.com/dak0rn/espressojs/wiki/0.1-Cascading-reque
 
 ## Installing
 
-espressojs will be installable with `npm` when the first release is available.
+espressojs can be installed using the node package manager.
+
+```bash
+npm install --save espressojs
+```
 
 ## The espressojs API
 
