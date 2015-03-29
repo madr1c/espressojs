@@ -1,3 +1,16 @@
+# Version 2.2.0
+
+## External
+
+* The `.linkTo()` function can be used to get a fully qualified hypermedia link to a registered resource. This is also possible with `.linkTo(this)` in handlers.
+* Resource handlers can be accessed using `.get()`
+* Errors in `.dispatchRequest()` now contain an error message
+
+## Internal
+
+* The `__espressojs` context now contains the path of the currently processed handler
+* The `.delete()` function now uses `.get()` to find the handler it has to delete
+
 # Version 2.1.0
 
 ## External
