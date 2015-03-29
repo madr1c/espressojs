@@ -65,7 +65,8 @@ The following options are supported:
   // dynamically build URLs
   "hostname": "localhost",          // Name of the server
   "protocol": "http",               // Protocol
-  "apiRoot":  "/"                    // Root of the API
+  "apiRoot":  "/"                   // Root of the API,
+  "port": ""                        // Port
 }
 ```
 
@@ -148,6 +149,29 @@ function(request, response, api, value)
 is **shared between every** handler and the [serializer function](#setting-the-serializer-function).
 * `api` is the currently used API object
 * `value` is the return or fulfillment value of the previous handler.
+
+### Getting resources
+Registering handlers can be accessed with the `.get()` function.
+
+```javascript
+Espresso.prototype.get = function(what) {};
+```
+
+The given argument has to be an object identifying a resource.
+
+```javascript
+{
+    name: 'name of the handler',   // Unique name of the handler
+    // or
+    pattern: '/handler/:pattern',  // Pattern of the handler
+    // or
+    path: '/handler/something'     // Handler that would handle this path
+}
+```
+
+`.get()` will return `null` if no handler can be found.
+
+The function returns a [`Handler` object](#handler);
 
 ### Deleting resources
 
@@ -363,10 +387,51 @@ The `api.chainComplete()` function can be used to detect if the current handler
 has been invoked in a chain. It expects one argument, the context of the handler.
 
 ```javascript
+Espresso.prototype.chainComplete = function( handlerContext ){};
+```
+
+```javascript
 api.resource('/some/thing', function(response, request, api) {
 
     if( api.chainComplete(this) )
         // ...
 
 });
+```
+
+### linkTo
+The `api.linkTo()` function can be used to create hypermedia links to a resource.
+All of its two arguments are optional and it returns an URL which is built using the [server options](#creating-a-new-api)
+stored in the API.
+
+```javascript
+Espresso.prototype.linkTo = function(what, replacers){};
+```
+The first argument can be
+
+* omitted, the API URL is returned then
+* a string which will be appended to the API URL
+* an object `{name: 'something'}` where `'something'` is the name of a resource handler
+* the `this` context of the current handler. The API URL + the current path will be returned
+
+If you use the object argument to link to a handler the second argument will be used
+to replace placeholder values in its URI.
+
+```javascript
+var api = new Espresso({
+    protocol: 'https',
+    hostname: 'apiserver.example.org',
+    apiRoot: '/api/v1',
+    port: '1024'
+});
+
+api.resource('/key/:storage/all', function(){}, {name: 'allkeys'});
+
+api.linkTo();                       // https://apiserver.example.org:1024/api/v1
+api.linkTo('/permission');          // https://apiserver.example.org:1024/api/v1/permission
+api.linkTo( { name: 'allkeys'} );   // https://apiserver.example.org:1024/api/v1/key/:storage/all
+api.linkTo(
+    {name: 'allkeys'},
+    {storage: 'users'});   // https://apiserver.example.org:1024/api/v1/key/users/all
+
 ```

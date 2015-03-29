@@ -4,7 +4,8 @@
 
 * The `.linkTo()` function can be used to get a fully qualified hypermedia link to a registered resource. This is also possible with `.linkTo(this)` in handlers.
 * Resource handlers can be accessed using `.get()`
-* Errors in `.dispatchRequest()` now contain an error message
+* Errors in `.dispatchRequest()` now contains an error message
+* There is now a `.port` config
 
 ## Internal
 
