@@ -26,7 +26,8 @@ describe('Instance', function() {
             { key: 'protocol', value: 'http' },
             { key: 'hostname', value: 'localhost' },
             { key: 'apiRoot', value: '/' },
-            { key: 'cascading', value: true}
+            { key: 'cascading', value: true},
+            { key: 'port', value: '' }
         ];
 
         _.each( defs, function(what) {
@@ -47,7 +48,8 @@ describe('Instance', function() {
             { key: 'hostname', value: 'example.com' },
             { key: 'apiRoot', value: '/api/v1' },
             { key: 'nondef', value: 'yes'},
-            { key: 'cascading', value: false}
+            { key: 'cascading', value: false},
+            { key: 'port', value: 1337 }
         ];
 
         var e = new Espresso({
@@ -56,7 +58,8 @@ describe('Instance', function() {
             hostname: 'example.com',
             apiRoot: '/api/v1',
             nondef: 'yes',
-            cascading: false
+            cascading: false,
+            port: 1337
         });
 
         _.each( options, function(what) {
