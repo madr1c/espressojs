@@ -1,3 +1,7 @@
+# Version 2.2.6
+
+* Fixed a bug where the default `OPTIONS` handler did not work correctly
+
 # Version 2.2.5
 
 * Error messages now using valid JSON
