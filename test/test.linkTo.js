@@ -55,6 +55,20 @@ describe('.linkTo', function() {
 
     });
 
+    it('should return the base URL if no resource w/ given name was found', function() {
+        var e = new Espresso({
+            protocol: 'https',
+            hostname: 'apiserver.example.org',
+            apiRoot: '/api/v1',
+            port: '1024'
+        });
+
+        e.resource('/key', function(){});
+
+        expect( e.linkTo({name:'key'}) ).to.equal( 'https://apiserver.example.org:1024/api/v1' );
+
+    });
+
     it('should link to a resource by name replacing placeholders', function() {
         var e = new Espresso({
             protocol: 'https',
@@ -73,7 +87,7 @@ describe('.linkTo', function() {
 
     });
 
-    it('should link to the current handler', function() {
+    it('should link to the current handler', function(done) {
         var e = new Espresso({
             protocol: 'https',
             hostname: 'apiserver.example.org',
@@ -89,6 +103,7 @@ describe('.linkTo', function() {
 
         e.setSerializer( function(r1, r2, api, v ) {
             expect( v ).to.equal( 'https://apiserver.example.org:1024/api/v1/some/thing' );
+            done();
         });
 
 
