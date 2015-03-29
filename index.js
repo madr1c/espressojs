@@ -9,8 +9,8 @@
 module.exports = (function() {
     var _ = require('lodash');
     var fs = require('fs');
-    var Configurable = require('./lib/Configurable');
-    var defaults = require('./lib/DefaultOptions');
+    var Configurable = require(__dirname + '/lib/Configurable');
+    var defaults = require(__dirname + '/lib/DefaultOptions');
     var replaceRegex = /(.*)\.js/;
 
 
@@ -24,7 +24,7 @@ module.exports = (function() {
         Configurable.call(this);
 
         this._resources = [];
-        this._serializer = require('./lib/Serializer');
+        this._serializer = require(__dirname + '/lib/Serializer');
 
         this.setAll( _.extend({}, defaults, options) );
 
@@ -44,11 +44,11 @@ module.exports = (function() {
     };
 
     // Expose parts
-    Espresso.Request  = require('./lib/Request');
-    Espresso.Response = require('./lib/Response');
-    Espresso.Handler  = require('./lib/Handler');
+    Espresso.Request  = require(__dirname + '/lib/Request');
+    Espresso.Response = require(__dirname + '/lib/Response');
+    Espresso.Handler  = require(__dirname + '/lib/Handler');
 
-    var path = "./lib/espresso/";
+    var path = __dirname + "/lib/espresso/";
     var isJS = function(w) { return _.endsWith(w,'.js'); };
     var normalize = function(w) { return replaceRegex.exec(w)[1]; };
 

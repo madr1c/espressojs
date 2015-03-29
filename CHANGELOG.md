@@ -1,3 +1,11 @@
+# Version 2.2.2
+
+* Fixed a path error
+
+# Version 2.2.1
+
+* There is now a chapter concerning the installation in README.md
+
 # Version 2.2.0
 
 ## External
