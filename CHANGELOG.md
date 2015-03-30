@@ -1,3 +1,7 @@
+# Version 2.3.1
+
+* Included a detailed usage example
+
 # Version 2.3.0
 
 ## External

@@ -12,6 +12,10 @@ Also, it is a framework on top of any kind of server functionality, it does not
 come with a built-in server. It provides you a way of managing resources in a
 flexible way.
 
+**Want a detailed usage example?**
+Check out the `how-to.js` file that shows you how to connect espressojs with
+express and how to setup a simple API that allows CRUD operations.
+
 ## Cascading requests
 
 The idea behind cascading requests is that a request may be handled with multiple
