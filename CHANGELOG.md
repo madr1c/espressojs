@@ -1,3 +1,7 @@
+# Version 2.3.2
+
+* Docs moved
+
 # Version 2.3.1
 
 * Included a detailed usage example
