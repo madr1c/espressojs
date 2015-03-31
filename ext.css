@@ -1,0 +1,133 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro);
+
+body, html {
+    height: 100%;
+}
+
+.wrapper {
+    padding: 1rem;
+}
+
+.espresso {
+    background: #D52D3D;
+}
+
+.f-espresso {
+    color: #D52D3D !important;
+}
+
+.f-espresso:hover {
+    color: #222 !important;
+    background: #D52D3D;
+}
+
+header {
+    min-height: 20%;
+}
+
+#espressojs {
+    display: block;
+    margin: 0 auto;
+}
+
+nav {
+    background: #444;
+    color: #fff;
+    font-family: 'Lato', sans-serif !important;
+}
+
+nav a:link,
+nav a:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav a:focus,
+nav a:hover,
+nav a:active {
+    background: #D52D3D !important;
+}
+
+main {
+    line-height: 1.6em;
+    font-size: 1.2rem;
+    font-family: 'Lato', sans-serif !important;
+    font-weight: 300;
+    margin-bottom: 4em;
+}
+
+code {
+    font-family: 'Source Code Pro', monospace !important;
+    font-size: 0.9em;
+}
+
+pre {
+    padding: 1em;
+    background: #444;
+    color: #ccc;
+}
+
+.center {
+    display: block;
+    margin: 1rem auto;
+}
+
+img {
+    max-width: 80%;
+}
+
+blockquote {
+    background: #eee;
+    padding: 1em;
+}
+
+main a:link,
+main a:visited {
+    color: #f60;
+}
+
+.resource {
+    padding-left: 2em !important;
+}
+
+/* hljs */
+
+.hljs {
+    color: #eee !important;
+    background: none !important;
+}
+
+.hljs-keyword {
+    color: #0b0 !important;
+}
+
+.hljs-built_in {
+    color: #ffc !important;
+}
+
+
+.hljs-string {
+    color: #08c !important;
+}
+
+.hljs-params {
+    color: #f60;
+}
+
+.info {
+    background: url(bag.png) top left repeat;
+}
+
+.button-error {
+    display: block;
+    margin: 0 auto;
+    background: rgb(202, 60, 60);
+    color: #fff !important;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+a.btn {
+    text-decoration: none !important;
+}

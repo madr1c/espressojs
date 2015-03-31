@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>espressojs - usage</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://cdn.rawgit.com/yahoo/pure-release/v0.6.0/pure-min.css" />
+        <link rel="stylesheet" href="ext.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    </head>
+    <body>
+
+        <div class="pure-g" id="top">
+            <nav class="pure-u-1-5">
+                    <ul class="pure-menu-list">
+                        <li class="pure-menu-item"><a href="index.html" class="pure-menu-link">&larr; espressojs</a></li>
+
+                        <li class="pure-menu-item"><a href="#intro" class="pure-menu-link">Introduction</a></li>
+                        <li class="pure-menu-item"><a href="#setup" class="pure-menu-link">Setup</a></li>
+                        <li class="pure-menu-item"><a href="#importing" class="pure-menu-link">Importing</a></li>
+                        <li class="pure-menu-item"><a href="#new" class="pure-menu-link">Creating a new API</a></li>
+                        <li class="pure-menu-item"><a href="#people" class="pure-menu-link">People storage</a></li>
+                        <li class="pure-menu-item"><a href="#serializer" class="pure-menu-link">Serializer function</a></li>
+                        <li class="pure-menu-item"><a href="#resources" class="pure-menu-link">Resources!</a></li>
+                        <li class="pure-menu-item"><a href="#root" class="resource pure-menu-link">/</a></li>
+                        <li class="pure-menu-item"><a href="#survivors" class="resource pure-menu-link">/survivors</a></li>
+                        <li class="pure-menu-item"><a href="#number" class="resource pure-menu-link">/survivors/:number</a></li>
+                        <li class="pure-menu-item"><a href="#cascading" class="pure-menu-link">Cascading</a></li>
+                        <li class="pure-menu-item"><a href="#names" class="resource pure-menu-link">/survivors/:number/name</a></li>
+                        <li class="pure-menu-item"><a href="#chain" class="pure-menu-link">Stop cascading</a></li>
+                        <li class="pure-menu-item"><a href="#numbers" class="resource pure-menu-link">/survivors/:number/number</a></li>
+                        <li class="pure-menu-item"><a href="#echo" class="resource pure-menu-link">/echo</a></li>
+                        <li class="pure-menu-item"><a href="#server" class="pure-menu-link">Serving</a></li>
+                        <li class="pure-menu-item"><a href="#using" class="pure-menu-link">Using</a></li>
+                    </ul>
+            </nav>
+
+            <main class="pure-u-4-5">
+                <header class="espresso">
+                    <img src="espressojs.png" id="espressojs" alt="" />
+                </header>
+
+                <div class="wrapper">
+                    <h1 id="intro">Usage example</h1>
+                    <p>This is a complete usage example demonstrating espressojs. It will show you</p>
+                    <ul>
+                        <li>how to setup a simple JSON REST API</li>
+                        <li>how to manage resources</li>
+                        <li>how to expose it using <em>express</em></li>
+                    </ul>
+
+                    <p>It is structured so that you can code the example while reading the explanations.<br />
+                    If you just want to see the full example checkout the <a class="" href="https://github.com/dak0rn/espressojs/blob/master/how-to.js">file on GitHub</a>.</p>
+                </div>
+
+                <div class="wrapper">
+                    <h2 id="setup">Setup</h2>
+
+                    <p>Assuming <em>node</em> and <em>npm</em> are already installed and runnable there are still
+                    some packages that have to be installed:</p>
+
+                    <ul>
+                        <li><strong>espressojs</strong> will provide the container for the API</li>
+                        <li><strong>express</strong> will be used for managing HTTP stuff</li>
+                        <li><strong>espressojs-express</strong> will bring both together</li>
+                        <li><strong>body-parser</strong> that converts request bodies to JSON</li>
+                        <li>and we need some kind of utility library (because we are lazy), I will go with <strong>lodash</strong></li>
+                    </ul>
+
+                    <p>You can install them with <code>npm</code>.</p>
+                </div>
+                    <pre><code class="bash">npm install --save express espressojs espressojs-express lodash</code></pre>
+                <div class="wrapper">
+                    <img src="setup.png" alt="" class="center" />
+
+                    <p>The complete code will be save in a single file, I named it <code>index.js</code>.
+                        Create and open it with your preferred editor.</p>
+
+                    <p><strong>Let's start coding.</strong></p>
+                </div>
+
+                <!-- Importing -->
+                <div class="wrapper">
+                    <h2 id="importing">Importing</h2>
+                    <p>At first we have to import all the packages we have just installed.</p>
+                </div>
+                    <pre><code class="js">var Espresso = require('espressojs');
+var express  = require('express');
+var espressoexpress = require('espressojs-express');
+var bodyParser = require('body-parser');
+var _ = require('lodash');</code></pre>
+
+                <!-- New API -->
+                <div class="wrapper">
+                    <h2 id="new">Creating a new API</h2>
+                    <p>Now, let us create a new espressojs instance.</p>
+                </div>
+                <pre><code class="js">var api = new Espresso({
+    port: '9000',
+    apiRoot: '/pub/api'
+});</code></pre>
+
+            <div class="wrapper">
+                <p>We tell espressojs that our API will be listening on port 9000 and that the
+                API will be available under <code>/pub/api</code>.<br />
+                There are a couple of <a href="https://github.com/dak0rn/espressojs/wiki/2-API-options">default options</a> that won't be changed,
+                e.g. the hostname of the server (<code>localhost</code>) and the rewrite
+                location for empty paths (<code>/</code>) - I'll come back to that later.</p>
+            </div>
+
+            <div class="wrapper">
+                <h2 id="people">People storage</h2>
+                <p>Now that we have espressojs ready for us, let's put some resources in it.
+                    It would like to have a list of people and each entry is going to have a name and
+                    a number that should be accessible through the API.
+                </p>
+            </div>
+
+            <pre><code class="js">var people = [
+    { name: 'John Locke', number: 4 },
+    { name: 'Hugo Reyes', number: 8 },
+    { name: 'James Ford', number: 15 },
+    { name: 'Sayid Jarrah', number: 16 },
+    { name: 'Jack Shephard', number: 23 }
+];</code></pre>
+
+            <div class="wrapper">
+                <p>Here, these entries are stored in an array. However, in production
+                you would normally use a database for that.<br />
+                This array won't be accessible directly but we will provide REST endpoints
+                for getting and manipulating it.</p>
+            </div>
+
+            <!-- Serializer function -->
+            <div class="wrapper">
+                <h2 id="serializer">Serializer function</h2>
+                <p>As described in the <a href="https://github.com/dak0rn/espressojs/wiki">documentation</a> a special serializer function
+                is used to transforms whatever the API produced into something the client
+                can handle - e.g. JSON or XML. It is invoked after every resource handler.</p>
+
+                <p>This allows you to write handlers that pass around JavaScript values like
+                objects or arrays which are then automatically serialized. This way, you do no longer
+                have to care about that - you will see that later!</p>
+
+                <p>We will overwrite the dump default serializer with a function that
+                creates JSON from the API result and updates the content type.</p>
+            </div>
+
+                <pre><code class="js">api.setSerializer( function(req, res, api, value) {
+    res.headers['Content-type'] = "application/json";
+    return JSON.stringify(value, null, 4);
+});</code></pre>
+
+            <!-- Resources! -->
+            <div class="wrapper">
+                <h2 id="resources">Resources!</h2>
+                <p>Now it's time for some resources. We use the <code>.resource()</code> function
+                for that. It takes a route pattern one or multiple handlers, an optional configuration
+                object and an optional context for <code>this</code>.</p>
+            </div>
+
+            <!-- Resources: / -->
+            <div class="wrapper">
+                <h2 id="root">API root</h2>
+                <p>We begin with the root resource that is often used to create
+                some meta information.</p>
+            </div>
+
+            <pre><code class="js">api.resource('/', function(request, response, api) {
+
+    var url = api.linkTo(this);
+    var users = api.linkTo({name: 'survivors'});
+
+    // This object is forwared to the serializer function
+    return {
+        title: 'My fancy API',
+        version: '1.0.0',
+        message: 'hello, world',
+        api: url,
+        users: users
+    };
+
+});</code></pre>
+
+            <div class="wrapper">
+                <p>The function will handle the root resource <code>/</code> for us (first argument).</p>
+                <p>It also gets a handler function that will be invoked when the resource is requested. Neither the
+                configuration object nor the context argument are given here - we don't need them.</p>
+                <p>Let's take a look at the function. A handler function normally takes <strong>four arguments</strong>:</p>
+                <code>function( request, response, api, value)</code>
+                <ul>
+                    <li><code>request</code> is a <a href="https://github.com/dak0rn/espressojs/wiki/6.1-Request">Request</a> object
+                    containing information about the request including the current path, the protocol and parameters.</li>
+                    <li><code>response</code> is a <a href="https://github.com/dak0rn/espressojs/wiki/6.2-Response">Response</a> object
+                    containing information about the created request.
+                    <strong>This object is shared between all handlers in a cascade chain.</strong> Thus, if you have
+                    multiple handlers invoked after each other (you will see that later) changes made by the previous
+                    handler are visible to the current one. This allows you to overwrite stuff without thinking about
+                    other handlers.</li>
+                    <li><code>api</code> is the espressojs API object</li>
+                    <li><code>value</code> is the value <strong>returned</strong> by the previous handler. This argument
+                    is omitted here because there will never be any previous handler invoked.</li>
+                </ul>
+
+                <p>The function creates an URL using the <code>.linkTo()</code> function. This function returns an
+                URL depending on whatever you provide to it. Here, it returns a hypermedia link to the current
+                resource. Please read more about <code>.linkTo()</code> <a href="https://github.com/dak0rn/espressojs/wiki/7-Utilities#linkto">here</a>.</p>
+
+                <p><code>.linkTo()</code> is used again to create a link to an URL named <code>survivors</code>. This resource
+                will be defined later.</p>
+
+                <p>Last but not least, we return an object with some infos. This will be forwarded the serializer function
+                that converts it into JSON. espressojs-express will pass it to express that will return it to the client.</p>
+            </div>
+
+            <div class="info wrapper ">
+                <h3>More magic is happening here!</h3>
+                <p>Our API is available at <code>/pub/api</code> and the handler we
+                have just defined handles <code>/</code>, thus <code>/pub/api/</code>.
+                It may happen that someone requests <code>/pub/api</code> without the trailing slash
+                that is <strong>not</strong> handled by the resource handler!</p>
+                <p>This might happen quite often, thus espressojs has an
+                    <a href="https://github.com/dak0rn/espressojs/wiki/2-API-options#rewriteempty">option</a> named <code>rewriteEmpty</code>.
+                    It contains a resource path such requests should be forwarded to. By default it forwards to <code>/</code> and since
+                    we did not overwrite that option in the constructor or using the <a href="https://github.com/dak0rn/espressojs/wiki/6.4-Configurable">options interface</a> the handler
+                    for <code>/</code> will do that. Even more, we do not have to care about that, everything happens automatically.
+                </p>
+            </div>
+
+            <div class="wrapper">
+                <h2 id="survivors">Survivors</h2>
+                <p>Now its time for some <a href="">cascading handlers</a>! We create by defining a resource <code>/survivors</code>.
+                Since it should be possible to create new items we also need to support POST requests. Since we do not want
+                to check the request method in the handler we provide an object with functions for GET and POST requests.</p>
+            </div>
+
+            <pre><code class="js">api.resource('/survivors', {
+    get: function(req, res, api) {
+        return _.map( people, function(survivor) {
+            return {
+                name: survivor.name,
+                number: survivor.number,
+
+                url: api.linkTo({name: 'survivor'}, {number: survivor.number})
+            };
+        });
+    },
+
+    post: function(req, res, api) {
+        var person = req.body;
+
+        if( ! _.isString(person.name) || _.isEmpty(person.name) ||
+            ! _.isNumber(person.number) ) {
+
+            res.status = '400';
+            return;
+        }
+
+        res.status = '201';
+        people.push( person );
+    }
+
+}, {name: 'survivors'});</code></pre>
+
+            <div class="wrapper">
+                <h3>The GET handler</h3>
+                <p>Since <code>/survivors</code> is a collection we want to return
+                an array with all the survivors in it. But in addition to that, we also want
+                to provide a hypermedia link to every survivor.</p>
+                <p>So, we map over the survivors array, copy values (we do not want to touch original ones)
+                and add a <code>.url</code> key containing a link. We use the <code>.linkTo()</code> again, we also
+                provide a name to a resource (that will be defined later) but this time we add a second argument, an
+                object with key-value-mappings telling <code>.linkTo()</code> to replace the URL placeholder <code>:number</code>
+                with the value in <code>survivor.number</code>.</p>
+
+                <h3>The POST handler</h3>
+                <p>Now that we have a handler that can be used to obtain the collection we want to add the ability to
+                add new items. By definition, sending a POST request to a collection creates a new item in it, the request
+                body has to contain information about it. Thus, we add a handler for POST that checks the requests body
+                and creates a new item if it is valid. The status code will be used to indicate if everything is okay (201)
+                or if the client did something wrong (400).</p>
+
+                <h3>Naming</h3>
+                <p>In this case, we also provide the optional <a href="https://github.com/dak0rn/espressojs/wiki/3.1.1-Handler-options">options argument</a>
+                    and provide a name that identifies the resource. If you look again at the handler for <code>/</code> you will see that this
+                    resource has been referenced there.</p>
+            </div>
+
+            <!-- Resource: /survivors/:number -->
+            <div class="wrapper">
+                <h2 id="number">Accessing items</h2>
+                <p>Obatining the colelction only is not sufficient enough, we also want to be able to access a single
+                entry only. Looking at the previous example you see that we referenced a resources named <code>survivor</code>.
+                To identify the entry in the collection we also need some kind of argument that tells us what item to retrieve.</p>
+
+                <p>So, we create the resource handler for <code>/survivors/:number</code> where <code>:number</code> is a placeholder
+                that will be replace with whatever the client requested.</p>
+            </div>
+
+            <pre><code class="js">api.resource('/survivors/:number', function(req, res, api, users) {
+    var num = parseInt(req.params.number); // :number
+    var o;
+
+    for( var index in users )
+        if( num === users[index].number ) {
+            o = users[index];
+            o.urls = {
+                number: api.linkTo({name:'survivor-number'},{number:o.number}),
+                name: api.linkTo({name:'survivor-name'},{number:o.number})
+            };
+
+            return o;
+        }
+
+    res.status = '404';
+    res.body = {error: 'Not found'};
+
+}, { name: 'survivor' } );</code></pre>
+
+            <div class="wrapper">
+                <p>Again, we provide a name and a function for all request types. What happens in the function:</p>
+                <ol>
+                    <li>We retrieve the URL placeholder value using <code>request.params.number</code>.
+                        Since this will be a string we convert it into an integer</li>
+                    <li>Next, we iterate over all the fourth argument of the function <code>users</code> (more details below).
+                        <ol>
+                            <li>If we find an entry with the number we return an object that contains an object <code>urls</code> containing hypermedia links
+                            to related resources. At this point, we are again overwriting URL placeholders with the number of the entry</li>
+                            <li>We return the object we found and use the implicit return code <code>200</code> indicating everything's fine</li>
+                        </ol>
+                    </li>
+
+                    <li>If we were not able to find anything we return a <code>404</code></li>
+                </ol>
+            </div>
+
+            <div class="wrapper info">
+                <h3 id="cascading">So chaining. Very cascading. Much DRY.</h3>
+                <p>Where does the fourth argument come from? And what does it contain?</p>
+                <p>Here comes espressojs' cascading approch into play. If a client requests <code>/survivors/4</code>
+                the request will be handled in the following order:</p>
+                <ol>
+                    <li>Handler for <code>/</code></li>
+                    <li>Handler for <code>/survivors</code></li>
+                    <li>Handler for <code>/survivors/:number</code> with <code>number=4</code></li>
+                </ol>
+                <p>The first handler is completely ignored since <code>/survivors</code> does not use the fourth argument.
+                However, the return value of <code>/survivors</code> is passed to <code>/survivors/:number</code> that filters it and adds new information.
+                It does not have to work with the global array in any way here.</p>
+
+                <img src="tmp-1.png" alt="" class="center" />
+
+                <p>And as you can see, everything generated in <code>/survivors</code> is already included in the response.</p>
+
+                <h3>You do not want to use cascading?</h3>
+                <p>No problem! You can turn it off <a href="">globally</a> or <a href="https://github.com/dak0rn/espressojs/wiki/3.1.1-Handler-options#cascading">per handler</a>.</p>
+                <p>So, if you did not want the root handler to be executed for every request, you could set the option <code>cascading</code>
+                to <code>false</code> for the handler <code>/survivors</code>.</p>
+            </div>
+
+            <div class="wrapper">
+                <h2 id="names">Name, please.</h2>
+                <p>Now, we want to add the handler named <code>survivor-name</code> supposed to return an object containing
+                the name of the item. It also uses the URL placeholder <code>:number</code> and relies on cascading.</p>
+            </div>
+
+            <pre><code class="js">api.resource('/survivors/:number/name', function(req,res,api,user) {
+    if( 'undefined' === typeof user )
+        return;
+
+    return { name: user.name };
+}, {name: 'survivor-name'});</code></pre>
+
+            <div class="wrapper">
+                <p>This handler is quite short, isn't it?</p>
+                <p>The argument <code>user</code> contains the item returned by the handler for <code>/survivors/:number</code>.
+                In other words: it contains the item that is requested and all we have to do is to return the name!</p>
+                <p>There is an important detail here: we check for <code>undefined</code> first. Look again at the previous
+                handler: if no item was found, it sets the response code to <code>404</code> and returns <code>undefined</code>.
+                So, if we get <code>undefined</code> here, <code>response.status</code> will already be set to <code>404</code> and <code>response.body</code>
+                contains an error message.
+                </p>
+            </div>
+
+            <div class="wrapper info">
+                <h3 id="chain">Breaking the chain</h3>
+                <p>It would also be possible to stop the execution of any handler after <code>/survivors/:number</code> if the item
+                could not be found.</p>
+                <p>Since handlers can return promises, returning a reject promise will stop the execution.</p>
+                <pre><code class="js">var deferred = api.deferred();
+deferred.reject('so reason');
+return deferred.promise;</code></pre>
+                </div>
+
+            <div class="wrapper">
+                <h2 id="numbers">Do you have a number?</h2>
+                <p>Okay, let's add a handler that returns an item's number. I think I do not have to say much about
+                what it does.</p>
+            </div>
+
+            <pre><code class="js">api.resource('/survivors/:number/number', function(req,res,api,user) {
+    if( 'undefined' === typeof user )
+        return;
+
+    return { number: user.number };
+}, { name: 'survivor-number' } );</code></pre>
+
+
+            <div class="wrapper">
+                <h2 id="echo">Echo service</h2>
+                <p>Playing with people on an island got a bit boring. Let's write an echo server that takes
+                a message and returns it, if it is valid. It will be available at <code>/echo</code>.</p>
+            </div>
+
+            <pre><code class="js">api.resource('/echo', function(request, response, api) {
+
+    if( _.isString( request.body.message ) ) {
+
+        return { echo: request.body.message };
+    }
+
+    response.status = '400'; // Bad request
+    return { format: "{ message: $message }" };
+
+});</code></pre>
+
+            <div class="wrapper">
+                <p>Everyhing as usual here: we validate and return something useful or tell the
+                client that its request does not look like what we wanted it to look like.</p>
+            </div>
+
+            <div class="wrapper">
+                <h2 id="server">Serving</h2>
+                <p>There are now some resources in our API but at this point a client
+                could not access them since we have no server running. This is going to be changed
+                now.</p>
+            </div>
+
+            <pre><code class="js">var server = express();</code></pre>
+
+            <div class="wrapper">
+                <p>First, we create a new HTTP server using express.</p>
+            </div>
+
+            <pre><code class="js">server.use( bodyParser.json() );</code></pre>
+            <div class="wrapper">
+                <p>Then, we tell express to use a middlware that makes sure client's request bodies
+                are available in JSON.</p>
+            </div>
+
+            <pre><code class="js">server.use('/pub/api*', espressoexpress(api) );</code></pre>
+            <div class="wrapper">
+                <p>Time to connect espressojs with express using espressojs-express. We give it the API instance
+                and pass its return value to express telling it that we want to use that middleware whenever
+                a request is made to <code>/pub/api*</code>.</p>
+            </div>
+
+            <div class="wrapper info">
+                <p>Do not for get to add the astericks at the end of the URI otherwise only <code>/pub/api</code> would be
+                handled by us.</p>
+                <p>However, this astericks is the reason we hve to use the <code>rewriteEmpty</code> options described earlier.</p>
+            </div>
+
+            <div class="wrapper">
+                <p>Now it's time to start the server</p>
+            </div>
+
+            <pre><code class="js">server.listen(9000);</code></pre>
+
+            <div class="wrapper">
+                <p>Open a terminal an issue <code>node index</code> to run the index.js file with node. The server
+                will then be listening on port 9000 so that you can access it at <a href="http://localhost:9000/pub/api" target="_blank">http://localhost:9000/pub/api</a></p>
+
+                <img src="root.png" alt="" class="center" />
+            </div>
+
+            <div class="wrapper">
+                <h2 id="using">Using it</h2>
+                <p>While the browser is good to explore the API (especially since we use hypermedia links!) it offers
+                only limited functionality. So, let's switch to the terminal and use <code>curl</code> to play aroud a bit.</p>
+                <p>At first, let's take a look what happens if we request the API root</p>
+            </div>
+
+            <pre><code class="bash">curl -i http://localhost:9000/pub/api</code></pre>
+
+            <div class="wrapper">
+                <p>We use the <code>-i</code> flag here that prints out the response headers. As you can see, we get what
+                we returned in the handler function. The status code is <code>200</code> and the content type is set to <code>application/json</code>.</p>
+
+                <img src="curl-root.png" alt="" class="center" />
+
+                <p>Since the handler written for <code>/</code> does the same for all request methods you will always
+                get the same result. You can try that by adding <code>-X POST</code> or <code>-X OPTIONS</code> to the request.</p>
+            </div>
+
+            <div class="wrapper info">
+                <p>If you send a HEAD request to the API root, it will also return that result. However, you will
+                only get the headers since express removes the body for us.</p>
+            </div>
+
+            <div class="wrapper">
+                <h3>Now, let's request an item.</h3>
+                <img src="curl-8.png" alt="" class="center" />
+            </div>
+
+            <code>
+                <pre class="bash">curl -i http://localhost:9000/pub/api/survivors/8</pre>
+            </code>
+
+            <div class="wrapper">
+                <p>Neat!</p>
+                <h3>Let's add something</h3>
+                <p>As I said before, we have to send a POST request to <code>/survivors</code> containing some JSON to add an item.
+                Thus, we tell curl that we send <code>application/json</code> and what JSON to send. The API then tells us that the
+                item has been created successfully.</p>
+            </div>
+
+            <code>
+                <pre class="bash">curl -X POST -d '{ "name": "Jin-Soo Kwon", "number": 42 }' \
+-H "Content-type: application/json" \
+-i http://localhost:9000/pub/api/survivors</pre>
+            </code>
+
+            <div class="wrapper"><img src="created.png" alt="" class="center" /></div>
+
+            <div class="wrapper">
+                <p>If you now request <code>/survivors</code> you will see the new entry.</p>
+            </div>
+
+            <div class="wrapper">
+                <h2>Where to go from here</h2>
+
+                <div class="pure-g">
+                    <div class="pure-u-1-4"><a class="btn" href="https://github.com/dak0rn/espressojs/wiki"><button class="pure-button button-error">Read the docs</button></a></div>
+                    <div class="pure-u-1-4"><a class="btn" href="https://github.com/dak0rn/espressojs/blob/master/how-to.js"><button class="pure-button button-error">Checkout the example</button></a></div>
+                    <div class="pure-u-1-4"><a class="btn" href="https://github.com/dak0rn/espressojs-express"><button class="pure-button button-error">espressojs-express</button></a></div>
+                    <div class="pure-u-1-4"><a class="btn" href="https://github.com/dak0rn/espressojs/issues"><button class="pure-button button-error">Issues?</button></a></div>
+                </div>
+
+            </div>
+
+            </main>
+        </div>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+</html>

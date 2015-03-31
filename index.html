@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>espressojs</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://cdn.rawgit.com/yahoo/pure-release/v0.6.0/pure-min.css" />
+        <link rel="stylesheet" href="ext.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    </head>
+    <body>
+
+        <div class="pure-g" id="top">
+            <nav class="pure-u-1-5">
+                    <ul class="pure-menu-list">
+                        <li class="pure-menu-item"><a href="#top" class="pure-menu-link">Introduction</a></li>
+                        <li class="pure-menu-item"><a href="usage.html" class="pure-menu-link f-espresso">Complete usage example &rarr;</a></li>
+                        <li class="pure-menu-item"><a href="#cascading" class="pure-menu-link">Cascading requests</a></li>
+                        <li class="pure-menu-item"><a href="#docs" class="pure-menu-link">Documentation</a></li>
+                        <li class="pure-menu-item"><a href="#server" class="pure-menu-link">espressojs and servers</a></li>
+                    </ul>
+            </nav>
+
+            <main class="pure-u-4-5">
+                <header class="espresso">
+                    <img src="espressojs.png" id="espressojs" alt="" />
+                </header>
+
+                <!-- Home section -->
+                <div class="wrapper">
+                    <h1 id="home">espressojs</h1>
+
+                    <p>espressojs is a small Open Source framework that can be used
+                        to build HTTP REST APIs in JavaScript.<br />
+                        It's core concept are cascading requests that allow you
+                        to keep your resource handlers very DRY.</p>
+
+                    <p>
+                        Also, it is a framework on top of any kind of server functionality, <strong>it does not come with a built-in server</strong>. It provides you a way of managing resources in a flexible way.
+                    </p>
+                </div>
+
+                <!-- Cascading requests -->
+                <div class="wrapper">
+                    <h2 id="cascading">Cascading requests</h2>
+
+                    <p>When it comes to REST APIs, creating valid and self-descriptive resource identifiers (URIs) is a very important part of the designing phase. It is a common best-practice to create URIs that support a request to every single segment they contain.</p>
+
+                    <div><img src="https://raw.githubusercontent.com/dak0rn/espressojs/master/img/cascading-requests.png" class="center" alt="" /></div>
+
+                    <h3>Cascading?</h3>
+
+                    <p>The following quote taken from the <a href="http://shop.oreilly.com/product/0636920021575.do">REST API Design Rulebook</a> explains it:</p>
+
+                    <blockquote><p>The URI path conveys a REST API’s resource model, with each forward slash separated path segment
+                    corresponding to a unique resource within the model’s hierarchy.</p>
+
+                    <p>For example, this URI design:</p>
+
+                    <ul>
+                    <li>http://api.soccer.restapi.org/leagues/seattle/teams/trebuchet</li>
+                    </ul>
+
+
+                    <p>indicates that each of these URIs should also identify an addressable resource:</p>
+
+                    <ul>
+                    <li>http://api.soccer.restapi.org/leagues/seattle/teams</li>
+                    <li>http://api.soccer.restapi.org/leagues/seattle</li>
+                    <li>http://api.soccer.restapi.org/leagues</li>
+                    <li>http://api.soccer.restapi.org</li>
+                    </ul>
+                    </blockquote>
+
+                    <p>Given, that the parts <code>leagues</code>, <code>seattle</code> and <code>teams</code> are <em>collections</em> with multiple items and <code>trebuchet</code> is a unique identifier of a single team, there could be a structure like this in memory or in a database:</p>
+</div>
+                    <pre><code class="json">{
+  "leagues": [
+    {
+      "id": "seattle",
+      "teams": [
+        { "id": "trebuchet" }
+      ]
+    }
+  ]
+}</code></pre><div class="wrapper">
+
+                    <p>The following rules could apply here:</p>
+
+                    <ul>
+                    <li>Making a request to <code>/leagues</code> will return an array with leagues that contains an
+                    object where <code>.id</code> is <code>"seattle"</code></li>
+                    <li>Making a request to <code>/leagues/seattle</code> will return an object where <code>.id</code> is <code>"seattle"</code>
+                    and that contains a key named <code>.teams</code></li>
+                    <li>Making a request to <code>/leagues/seattle/teams</code> will return an array containing an object
+                    that has a property <code>.id</code> containing <code>"trebuchet"</code></li>
+                    <li>Finally, requesting <code>/leagues/seattle/teams/trebuchet</code> will return the object
+                    that has <code>.id</code> set to <code>"trebuchet"</code></li>
+                    </ul>
+
+
+                    <p>Considering the steps happening on the server when requesting resources may make sure
+                    that things are not so DRY there:</p>
+
+                    <ul>
+                    <li>Making a request to <code>/leagues</code> may load all leagues from a database</li>
+                    <li>Making a request to <code>/leagues/seattle</code> may load all leagues from a database and filter for seattle</li>
+                    <li>Making a request to <code>/leagues/seattle/teams</code> may load all leagues from a database and filter for seattle, then extract
+                    the property <code>.teams</code></li>
+                    <li>Making a request to <code>/leagues/seattle/teams/trebuchet</code> may load all leagues from a database, filter for seattle,
+                      extract the property <code>.teams</code> and find the object with the id <code>"trebuchet"</code></li>
+                    </ul>
+
+
+                    <p>Depending on the underlying structure, it may happen that segment handlers have to
+                    perform exactly the same tasks as parent segment handlers do.</p>
+
+                    <h3>Cascading!</h3>
+
+                    <p>The idea of espressojs is, that segment handlers are invoked one after another and
+                    that their results are forwarded to the following handlers. At the end, a serializer
+                    function takes the result of the last handler and transforms it into whatever the
+                    API wants to return, e.g. JSON or XML.</p>
+
+                    <p>Thus, the handlers for segments can return valid JavaScript that is then passed
+                    to the next function where it may be transformed in any way.</p>
+
+                    <p>The example from the top may look like this in espressojs:</p>
+</div>
+                    <pre><code class="js">api.resource('/leagues', function(request, response, api) {
+    var deferred = api.deferred();</p>
+
+    database.load('leagues', function(err, value) {
+        if( err )
+            deferred.reject(err);
+        else {
+            // We want JSON
+            response.headers['Content-type'] = 'application/json';
+            deferred.resolve(value);
+        }
+    });
+
+    return deferred.promise();
+});
+
+api.resource('/leagues/:league',
+    function(request, response, api, leagues) {
+        return _.where(leagues, {id:request.params.league})[0];
+});
+
+api.resource('/leagues/:league/:prop',
+    function(request, response, api, league) {
+        return _.result(league, request.params.prop);
+});
+
+api.resource('/leagues/:league/:prop/:team',
+    function(request, response, api, teams) {
+        return _.where(teams, {id: request.params.team})[0];
+});</code></pre>
+    <div class="wrapper">
+                    <p>Writing resource handlers this way allows you to share functionality through your
+                    API and makes your handlers shorter</p>
+
+
+                </div>
+
+                <div class="wrapper">
+                    <h2 id="server">espressojs and servers</h2>
+
+                    <p>
+                        As mentioned above, espressojs does not provide you any kind of HTTP server functionality.
+                        However, it would not make a lot of sense without a way to use it with one.<br />
+                        Checkout the <a href="">espressojs-express</a> connector that shows how you write small piece
+                        of software that connects your server with the framework.
+                    </p>
+                </div>
+
+            </main>
+        </div>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+</html>
