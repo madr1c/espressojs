@@ -1,3 +1,7 @@
+# Version 2.3.3
+
+* Included an awesome usage example at https://dak0rn.github.io/espressojs/
+
 # Version 2.3.2
 
 * Docs moved

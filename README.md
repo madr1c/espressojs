@@ -12,9 +12,10 @@ Also, it is a framework on top of any kind of server functionality, it does not
 come with a built-in server. It provides you a way of managing resources in a
 flexible way.
 
-**Want a detailed usage example?**
-Check out the `how-to.js` file that shows you how to connect espressojs with
-express and how to setup a simple API that allows CRUD operations.
+**Want a usage example?**
+There is a very well documented usage file available
+[https://dak0rn.github.io/espressojs/](https://dak0rn.github.io/espressojs/)
+that shows you how to setup an API and expose it using express.
 
 ## Cascading requests
 
