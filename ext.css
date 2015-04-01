@@ -131,3 +131,7 @@ main a:visited {
 a.btn {
     text-decoration: none !important;
 }
+
+.goto {
+    color: #fff !important;
+}
